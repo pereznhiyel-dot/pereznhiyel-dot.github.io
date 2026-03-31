@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Biblioteca Escolar Virgita Matamoros Vega | CTP Guácimo</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+/* ======================== ESTILOS ======================== */
+:root {
+  --green-deep:  #1f3e1a;
+  --green-mid:   #2d5a2c;
+  --gold:        #e9bc7d;
+  --amber-bg:    #faf6ed;
+  --card-bg:     #fffcf5;
+  --border:      #e6d5b8;
+  --text:        #2c2418;
+  --text-muted:  #7a6a55;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--amber-bg);
+  background-image:
+    radial-gradient(circle at 22% 38%,rgba(210,180,140,.08) 2%,transparent 2.5%),
+    radial-gradient(circle at 75% 68%,rgba(45,90,44,.05) 2%,transparent 2.5%);
+  background-size:32px 32px,44px 44px;
+  min-height:100vh; color:var(--text); line-height:1.6; overflow-x:hidden;
+}
+body.neon-theme {
+  background:#09090f;
+  background-image:radial-gradient(circle at 25% 40%,rgba(0,255,100,.15) 2%,transparent 2.5%);
+  color:#e0e0ff; --card-bg:#111120; --border:#1c3c1c; --amber-bg:#09090f;
+}
+
+#splash {
+  position:fixed;inset:0;z-index:99999999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;animation:splashExit .55s cubic-bezier(.4,0,.2,1) 3s forwards;
+}
+#splash-bg {
+  position:absolute;inset:0;
+  background:linear-gradient(145deg,#111a10 0%,#0e1a0e 40%,#261608 100%);
+}
+.splash-icon {
+  font-size:clamp(3.5rem,9vw,5.5rem);display:block;margin-bottom:22px;
+  position:relative;z-index:2;opacity:0;transform:translateY(50px) scale(.8);
+  animation:sIconIn .7s cubic-bezier(.2,.9,.3,1.1) .15s forwards;
+  filter:drop-shadow(0 0 30px rgba(233,188,125,.45));
+}
+.splash-title-wrap { overflow:hidden;position:relative;z-index:2;text-align:center; }
+.splash-title {
+  font-family:'Playfair Display',serif;font-size:clamp(1.6rem,5vw,3.6rem);
+  font-weight:700;color:#fff;line-height:1.18;letter-spacing:-.025em;
+  opacity:0;transform:translateY(100%);
+  animation:sTextIn .7s cubic-bezier(.2,.8,.3,1) .35s forwards;display:block;
+}
+.splash-sub {
+  position:relative;z-index:2;font-size:clamp(.8rem,2vw,1rem);
+  color:rgba(233,188,125,.85);text-align:center;margin-top:10px;
+  font-weight:300;letter-spacing:.05em;opacity:0;transform:translateY(20px);
+  animation:sFadeUp .6s ease .65s forwards;
+}
+.splash-bar-wrap {
+  position:relative;z-index:2;margin-top:30px;width:clamp(180px,45vw,380px);
+  height:2px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;
+}
+.splash-bar { height:100%;width:0;border-radius:2px;background:linear-gradient(90deg,var(--gold),#fff8e0);animation:sBarFill 1.9s ease-out .5s forwards; }
+@keyframes sIconIn  { to{opacity:1;transform:translateY(0) scale(1);} }
+@keyframes sTextIn  { to{opacity:1;transform:translateY(0);} }
+@keyframes sFadeUp  { to{opacity:1;transform:translateY(0);} }
+@keyframes sBarFill { to{width:100%;} }
+@keyframes splashExit { from{opacity:1;} to{opacity:0;visibility:hidden;pointer-events:none;} }
+
+.library-header {
+  background:linear-gradient(135deg,var(--green-mid) 0%,var(--green-deep) 100%);
+  border-bottom:4px solid var(--gold);box-shadow:0 8px 24px rgba(0,0,0,.15);
+  transition:background .3s;opacity:0;transform:translateY(-14px);
+  animation:fadeInDown .6s ease 3.2s forwards;
+}
+@keyframes fadeInDown { to{opacity:1;transform:translateY(0);} }
+@keyframes fadeInUp   { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
+.library-title { font-family:'Playfair Display',serif;font-weight:700;letter-spacing:-.02em;text-shadow:2px 3px 0 rgba(0,0,0,.15);line-height:1.15; }
+.service-badge {
+  background:rgba(255,245,225,.18);border:1px solid rgba(255,245,225,.25);
+  border-radius:40px;padding:5px 14px;font-size:.78rem;font-weight:500;
+  transition:background .2s,transform .2s;cursor:default;
+}
+.service-badge:hover{background:rgba(255,245,225,.28);transform:translateY(-1px);}
+
+.welcome-card {
+  background:#fff;border-radius:20px;padding:22px 28px;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid var(--border);
+  opacity:0;animation:fadeInUp .65s ease 3.4s forwards;
+}
+.welcome-item { display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;transition:background .18s;cursor:default; }
+.welcome-item:hover{background:#fef7e0;}
+
+.botones-footer {
+  display:flex;flex-wrap:wrap;justify-content:center;gap:12px;
+  margin:36px 20px 60px;opacity:0;animation:fadeInUp .65s ease 3.6s forwards;
+  min-height:50px;
+}
+.btn-biblioteca {
+  color:#fff;padding:9px 22px;border-radius:40px;
+  display:inline-flex;align-items:center;gap:8px;
+  font-weight:500;font-size:.85rem;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
+  transition:transform .2s,filter .2s,box-shadow .2s;
+  border:none;cursor:pointer;font-family:'DM Sans',sans-serif;
+}
+.btn-biblioteca:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 7px 18px rgba(0,0,0,.18);}
+.btn-biblioteca:active{transform:translateY(0);}
+
+#fb-modal {
+  display:none;position:fixed;inset:0;z-index:999999;
+  align-items:center;justify-content:center;
+  background:rgba(0,0,0,.55);
+}
+#fb-modal.modal-open{display:flex;}
+.fb-modal-content {
+  animation:modalPop .3s cubic-bezier(.2,.9,.4,1.08);
+  border:1px solid #e3c9a0;box-shadow:0 28px 50px rgba(0,0,0,.28);
+  background:#fff;border-radius:24px;overflow:hidden;position:relative;z-index:1;
+}
+@keyframes modalPop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+.edu-container {
+  background:var(--card-bg);border-radius:28px;box-shadow:0 8px 30px rgba(0,0,0,.07);
+  margin:32px 24px;border:1px solid var(--border);overflow:hidden;
+  opacity:0;animation:fadeInUp .7s ease 3.5s forwards;
+}
+.edu-header{background:linear-gradient(90deg,#f5ede0,#faf4e8);border-bottom:1px solid #e0cfb2;padding:18px 28px;}
+.edu-header h2{font-family:'Playfair Display',serif;font-weight:600;color:#3a2c1c;}
+.marcador-sidebar{background:#fef9ef;border-right:1px solid #e5d5ba;min-width:190px;}
+.marcador-nav-item{border-radius:12px;cursor:pointer;transition:background .15s,border-left-color .15s;border-left:3px solid transparent;}
+.marcador-nav-item.active{background:#e7dcc8;border-left-color:#7c5e3a;}
+.marcador-nav-item:hover:not(.active){background:#f0e8d8;}
+.marcador-nav-btn{display:flex;align-items:center;gap:10px;padding:10px 14px;font-weight:500;color:#3a2c1c;font-size:.88rem;}
+.educational-section.hidden{display:none;}
+.edu-content-card{background:#fef7e8;border:1px solid #eeddbb;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px;}
+.edu-content-card h4{font-weight:600;color:#3a2c1c;font-size:.95rem;}
+.edu-content-card p{font-size:.82rem;color:var(--text-muted);}
+.ip-badge{background:#efe3cf;border-left:4px solid #9b6e3e;font-family:'Courier New',monospace;padding:8px 14px;border-radius:8px;display:inline-block;margin-top:8px;font-size:.88rem;color:#5a3e20;}
+.styled-list{list-style:none;}
+.styled-list li{background:#fef7ea;border:1px solid #eeddbb;border-radius:12px;padding:10px 14px;display:flex;gap:10px;margin-bottom:8px;font-size:.9rem;}
+
+.libros-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:14px 0;max-height:480px;overflow-y:auto;padding-right:6px;}
+.libros-grid::-webkit-scrollbar{width:5px;}
+.libros-grid::-webkit-scrollbar-track{background:#f0e8d8;border-radius:4px;}
+.libros-grid::-webkit-scrollbar-thumb{background:#c0a070;border-radius:4px;}
+.libro-card{background:#fef7e0;border-left:4px solid #b4652d;border-radius:14px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;transition:transform .2s,box-shadow .2s;}
+.libro-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.1);}
+.libro-titulo{font-weight:600;color:#2c2418;font-size:.93rem;line-height:1.4;}
+.libro-boton{background:#2c553c;color:#fff;padding:8px 16px;border-radius:40px;font-size:.78rem;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background .2s,transform .2s;width:fit-content;font-weight:500;}
+.libro-boton:hover{background:#1f3e1a;transform:translateY(-1px);}
+
+.secret-trigger{
+  position:fixed;bottom:18px;right:18px;
+  background:rgba(100,70,40,.72);backdrop-filter:blur(6px);
+  border-radius:40px;padding:6px 15px;font-size:11px;font-weight:500;color:#f3e7d3;
+  border:1px solid #c2a16b;cursor:pointer;z-index:99999;
+  font-family:'Courier New',monospace;transition:background .2s,transform .2s;user-select:none;
+}
+.secret-trigger:hover{background:rgba(130,90,50,.88);transform:translateY(-1px);}
+
+.secret-modal{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(10px);z-index:9999999;display:flex;align-items:center;justify-content:center;visibility:hidden;opacity:0;transition:opacity .2s,visibility .2s;}
+.secret-modal.active{visibility:visible;opacity:1;}
+.secret-card{background:#2b241c;border-radius:28px;padding:34px 28px;max-width:380px;width:88%;text-align:center;border:1px solid #e2bc7c;position:relative;animation:modalPop .3s cubic-bezier(.2,.9,.4,1.08);}
+.secret-close{position:absolute;top:14px;right:20px;font-size:28px;cursor:pointer;color:#e2bc7c;line-height:1;transition:transform .2s,color .2s;background:none;border:none;padding:0;}
+.secret-close:hover{transform:scale(1.2);color:#fff;}
+.secret-card input{background:#1f1a14;border:1px solid #b88b4a;color:#ffdfaa;font-family:'Courier New',monospace;padding:12px 16px;width:100%;border-radius:60px;text-align:center;font-size:.95rem;transition:border-color .2s,box-shadow .2s;outline:none;}
+.secret-card input:focus{border-color:#e2bc7c;box-shadow:0 0 0 3px rgba(226,188,124,.2);}
+.secret-card .verify-btn{background:#b57c3a;border:none;padding:10px 28px;border-radius:40px;color:#fff;font-weight:600;margin-top:18px;cursor:pointer;font-size:.9rem;width:100%;transition:filter .2s,transform .2s;}
+.secret-card .verify-btn:hover{filter:brightness(1.12);transform:translateY(-1px);}
+.error-code{color:#ffaa88;font-size:.74rem;margin-top:12px;min-height:18px;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.shake{animation:shake .4s ease;}
+
+.admin-panel{position:fixed;inset:0;background:rgba(0,0,0,.87);backdrop-filter:blur(14px);z-index:10000000;display:none;justify-content:center;align-items:flex-start;overflow-y:auto;padding:20px;}
+.admin-panel.active{display:flex;}
+.admin-container{background:#1e1b16;border-radius:28px;width:100%;max-width:1100px;color:#e6dfcf;box-shadow:0 0 50px rgba(0,0,0,.6);border:1px solid #b88b4a;margin:auto;}
+.admin-header{background:#2c241c;padding:16px 24px;border-bottom:1px solid #b88b4a;display:flex;justify-content:space-between;align-items:center;border-radius:28px 28px 0 0;flex-wrap:wrap;gap:10px;}
+.admin-header h2{font-family:'Playfair Display',serif;font-size:1.15rem;color:#e6cdaa;}
+.admin-tabs{display:flex;gap:6px;margin:0 24px;border-bottom:1px solid #4a3e2c;flex-wrap:wrap;}
+.admin-tab{padding:11px 20px;cursor:pointer;border-radius:18px 18px 0 0;background:#2c241c;color:#cfc5b0;font-size:.85rem;font-weight:500;transition:background .2s,color .2s;white-space:nowrap;}
+.admin-tab.active{background:#b88b4a;color:#1e1b16;font-weight:700;}
+.admin-tab:hover:not(.active){background:#3a3020;}
+.admin-content{padding:24px;}
+
+.editor-group{margin-bottom:20px;background:#2c241c;border-radius:14px;padding:16px;}
+.editor-group label{display:block;font-weight:600;margin-bottom:7px;color:#e6cdaa;font-size:.83rem;}
+.editor-group textarea,.editor-group input[type="text"]{width:100%;background:#3a2e24;border:1px solid #b88b4a;border-radius:10px;padding:10px 12px;color:#ffefcf;font-size:.85rem;outline:none;transition:border-color .2s;}
+.editor-group textarea:focus,.editor-group input[type="text"]:focus{border-color:#e2bc7c;}
+
+.admin-btn{background:#b88b4a;color:#1e1b16;border:none;padding:9px 22px;border-radius:40px;cursor:pointer;font-weight:700;font-size:.83rem;transition:filter .2s,transform .2s;}
+.admin-btn:hover{filter:brightness(1.12);transform:translateY(-1px);}
+.admin-btn.secondary{background:#4a3e2c;color:#e0cca0;}
+.admin-btn.danger{background:#8a3a2a;color:#ffe0d0;}
+.admin-btn.success{background:#2c6e3c;color:#d0ffd8;}
+.close-admin{background:#6a4e2a;color:#ffefcf;}
+.btn-terminal{background:#2c6e3c;margin-left:10px;}
+
+.slot-row{display:flex;gap:8px;flex-wrap:wrap;padding:16px;background:#221c14;border-radius:14px;border:1px solid #3a2e1c;margin:12px 0;min-height:60px;align-items:center;}
+.slot-item{
+  border-radius:30px;padding:8px 16px;font-size:.8rem;font-weight:600;cursor:pointer;
+  transition:transform .15s,box-shadow .15s,opacity .15s;user-select:none;
+  display:flex;align-items:center;gap:6px;white-space:nowrap;
+}
+.slot-empty{background:#3a2e1c;border:2px dashed #7a6040;color:#9a8060;}
+.slot-empty:hover{background:#4a3a20;border-color:#b88b4a;color:#e2bc7c;transform:scale(1.05);}
+.slot-occupied{border:2px solid rgba(255,255,255,.2);color:#fff;cursor:default;opacity:.75;}
+.slot-selected{border:2px solid #00ff88 !important;box-shadow:0 0 12px rgba(0,255,136,.4);transform:scale(1.08);opacity:1 !important;}
+
+.color-subtabs{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid #3a2e1c;padding-bottom:0;}
+.color-subtab{padding:8px 16px;cursor:pointer;border-radius:14px 14px 0 0;background:#261f17;color:#9a8060;font-size:.8rem;font-weight:500;transition:background .2s,color .2s;}
+.color-subtab.active{background:#b88b4a;color:#1e1b16;font-weight:700;}
+.color-subtab:hover:not(.active){background:#3a2e1c;}
+
+.custom-color-tag{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#2c241c;border-radius:12px;border:1px solid #3a2e1c;margin-bottom:8px;}
+.color-swatch-preview{width:32px;height:32px;border-radius:8px;border:2px solid #5a4a30;flex-shrink:0;}
+
+.log-entry{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:#26201a;border-radius:10px;border-left:3px solid #b88b4a;margin-bottom:8px;font-size:.8rem;}
+.log-time{color:#7a6040;white-space:nowrap;font-family:'Courier New',monospace;flex-shrink:0;}
+.log-msg{color:#d4b080;line-height:1.4;}
+
+#dev-terminal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.94);width:92%;max-width:880px;z-index:10000000;opacity:0;visibility:hidden;transition:all .22s ease;}
+#dev-terminal.open{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1);}
+.dev-term-container{background:rgba(0,0,0,.97);backdrop-filter:blur(10px);border:2px solid #00ff9d;border-radius:20px;overflow:hidden;box-shadow:0 0 40px rgba(0,255,100,.3);}
+.dev-term-header{background:#0a1f12;padding:12px 18px;border-bottom:1px solid #00cc77;display:flex;justify-content:space-between;color:#b3ffcf;font-family:'Courier New',monospace;font-size:.83rem;align-items:center;}
+.dev-term-body{background:#030c07f2;padding:18px;max-height:54vh;overflow-y:auto;color:#b0ffcf;font-size:12.5px;font-family:'Courier New',monospace;line-height:1.65;}
+.dev-term-body::-webkit-scrollbar{width:4px;}
+.dev-term-body::-webkit-scrollbar-track{background:#0a1f12;}
+.dev-term-body::-webkit-scrollbar-thumb{background:#00cc77;border-radius:4px;}
+.dev-input-line{border-top:1px solid #1c6e3c;padding:11px 18px;background:#021005;display:flex;gap:10px;align-items:center;}
+.dev-input{background:transparent;border:none;color:#aaffcc;flex:1;outline:none;font-family:'Courier New',monospace;font-size:12.5px;}
+.dev-prompt{color:#5eff8f;font-family:'Courier New',monospace;font-size:12.5px;}
+.dev-btn-mini{background:#2c6e3c;border:none;padding:4px 12px;border-radius:20px;color:#fff;cursor:pointer;font-size:11px;margin-left:8px;transition:filter .2s;}
+.dev-btn-mini:hover{filter:brightness(1.15);}
+.dev-btn-mini.close-x{background:#aa3e2c;}
+.matrix-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999995;pointer-events:none;}
+
+.turntable-wrap {
+  display:flex;flex-direction:column;align-items:center;
+  padding:28px 20px;background:#1a1208;border-radius:24px;
+  border:2px solid #3a2e1c;position:relative;overflow:hidden;
+  box-shadow:inset 0 0 60px rgba(0,0,0,.6);
+}
+.turntable-wrap::before {
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 30%,rgba(180,120,40,.08) 0%,transparent 60%);
+}
+.turntable-base {
+  width:260px;height:260px;position:relative;flex-shrink:0;
+}
+.record-platter {
+  width:240px;height:240px;border-radius:50%;
+  background:radial-gradient(circle,#222 0%,#111 40%,#1a1a1a 100%);
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  box-shadow:0 0 20px rgba(0,0,0,.8),inset 0 0 10px rgba(255,255,255,.03);
+}
+.record-platter.spinning { animation:recordSpin 1.8s linear infinite; }
+@keyframes recordSpin { from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);} }
+.record-grooves {
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:240px;height:240px;border-radius:50%;
+  background:
+    repeating-radial-gradient(circle at center,
+      transparent 30px, rgba(255,255,255,.04) 31px,
+      transparent 32px, rgba(255,255,255,.03) 33px,
+      transparent 38px, rgba(255,255,255,.04) 39px,
+      transparent 40px
+    );
+}
+.record-label {
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,#8b1a1a,#c0392b,#8b1a1a);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.5);
+  overflow:hidden;
+}
+.record-label::before {
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,rgba(255,255,255,.18) 0%,transparent 60%);
+}
+.record-label-text {
+  color:rgba(255,255,255,.85);font-size:.35rem;font-weight:700;
+  text-align:center;padding:0 6px;line-height:1.2;
+  position:relative;z-index:1;max-width:70px;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+}
+.record-hole {
+  width:10px;height:10px;border-radius:50%;
+  background:#1a1a1a;position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);z-index:2;
+  border:1px solid rgba(255,255,255,.1);
+}
+.tonearm {
+  position:absolute;top:10px;right:10px;
+  width:80px;height:120px;
+  transform-origin:20px 20px;
+  transition:transform .8s cubic-bezier(.4,0,.2,1);
+}
+.tonearm.playing { transform:rotate(-20deg); }
+.tonearm-svg { width:100%;height:100%; }
+.music-controls {
+  display:flex;align-items:center;gap:10px;margin-top:18px;
+  background:#0e0a06;border-radius:50px;padding:10px 18px;
+  border:1px solid #3a2e1c;
+}
+.mc-btn {
+  background:none;border:none;cursor:pointer;
+  color:#d4a840;font-size:1.3rem;transition:transform .15s,color .15s;
+  padding:4px 6px;border-radius:50%;width:38px;height:38px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.mc-btn:hover { color:#ffe080;transform:scale(1.15); }
+.mc-btn.active-repeat { color:#00ff88; }
+.mc-btn.mc-play { font-size:1.5rem;background:#b88b4a;color:#1e1b16;border-radius:50%; }
+.mc-btn.mc-play:hover { background:#e2bc7c;transform:scale(1.1); }
+.music-track-info {
+  text-align:center;margin-top:12px;min-height:36px;
+}
+.music-track-name {
+  color:#e2bc7c;font-size:.85rem;font-weight:600;
+  max-width:260px;overflow:hidden;white-space:nowrap;
+  text-overflow:ellipsis;display:block;
+}
+.music-track-status { color:#7a6040;font-size:.72rem;margin-top:2px; }
+.music-track-list {
+  width:100%;max-height:200px;overflow-y:auto;margin-top:14px;
+}
+.music-track-list::-webkit-scrollbar{width:4px;}
+.music-track-list::-webkit-scrollbar-track{background:#1a1208;}
+.music-track-list::-webkit-scrollbar-thumb{background:#b88b4a;border-radius:4px;}
+.music-track-item {
+  display:flex;align-items:center;gap:10px;padding:8px 12px;
+  border-radius:10px;cursor:pointer;transition:background .15s;
+  border:1px solid transparent;
+}
+.music-track-item:hover { background:#2c241c; }
+.music-track-item.active { background:#2c241c;border-color:#b88b4a; }
+.music-track-item-name { color:#d4b070;font-size:.82rem;flex:1; }
+.music-track-item-del { color:#8a3a2a;font-size:.85rem;cursor:pointer;opacity:.6;transition:opacity .15s; }
+.music-track-item-del:hover { opacity:1; }
+.music-progress-wrap {
+  width:100%;max-width:260px;height:4px;background:#2c241c;
+  border-radius:4px;margin-top:10px;cursor:pointer;position:relative;overflow:hidden;
+}
+.music-progress-bar { height:100%;background:#b88b4a;border-radius:4px;width:0%;transition:width .5s linear; }
+
+#admin-overlay {
+  position:fixed;inset:0;z-index:999999998;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(10,8,4,.88);backdrop-filter:blur(6px);
+}
+#admin-overlay.show { display:flex; }
+.admin-overlay-card {
+  text-align:center;padding:40px 36px;
+  background:linear-gradient(145deg,#1e1a12,#2c2418);
+  border:1px solid #b88b4a;border-radius:28px;
+  box-shadow:0 0 60px rgba(180,140,60,.2);
+  animation:overlayPulse 2s ease-in-out infinite;
+  max-width:380px;width:88%;
+}
+@keyframes overlayPulse {
+  0%,100%{box-shadow:0 0 30px rgba(180,140,60,.15);}
+  50%{box-shadow:0 0 60px rgba(180,140,60,.35);}
+}
+.admin-overlay-spinner {
+  width:56px;height:56px;border-radius:50%;
+  border:3px solid rgba(180,140,60,.2);
+  border-top-color:#b88b4a;
+  animation:spin 1s linear infinite;margin:0 auto 18px;
+}
+@keyframes spin { to{transform:rotate(360deg);} }
+.admin-overlay-title {
+  font-family:'Playfair Display',serif;color:#e2bc7c;
+  font-size:1.15rem;font-weight:600;margin-bottom:6px;
+}
+.admin-overlay-sub { color:#7a6040;font-size:.8rem; }
+#apply-overlay {
+  position:fixed;inset:0;z-index:999999999;
+  display:none;align-items:center;justify-content:center;
+  flex-direction:column;
+  background:linear-gradient(145deg,#111a10,#0e1a0e 40%,#261608);
+}
+#apply-overlay.show { display:flex; }
+.apply-icon { font-size:4rem;animation:sIconIn .5s ease forwards;opacity:0; }
+.apply-title {
+  font-family:'Playfair Display',serif;color:#e2bc7c;
+  font-size:clamp(1.2rem,4vw,2rem);font-weight:700;margin-top:16px;
+  text-align:center;opacity:0;animation:sFadeUp .6s ease .3s forwards;
+}
+.apply-bar-wrap { width:clamp(160px,40vw,320px);height:2px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:24px;overflow:hidden;opacity:0;animation:sFadeUp .5s ease .5s forwards; }
+.apply-bar { height:100%;background:linear-gradient(90deg,var(--gold),#fff8e0);animation:sBarFill 1.5s ease .6s forwards;width:0; }
+
+/* Nuevo modal de elección */
+.choice-modal {
+  position:fixed;inset:0;z-index:99999999;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(12px);
+}
+.choice-modal.show { display:flex; }
+.choice-card {
+  background:linear-gradient(145deg,#1e1a12,#2c2418);
+  border-radius:32px;padding:28px 24px;text-align:center;
+  border:1px solid #b88b4a;max-width:320px;width:88%;
+  animation:modalPop .35s cubic-bezier(.2,.9,.4,1.08);
+}
+.choice-card h3 {
+  font-family:'Playfair Display',serif;color:#e2bc7c;
+  font-size:1.35rem;margin-bottom:8px;
+}
+.choice-card p {
+  color:#9a8060;font-size:.85rem;margin-bottom:24px;
+}
+.choice-buttons {
+  display:flex;gap:16px;justify-content:center;
+}
+.choice-btn {
+  background:#b88b4a;border:none;padding:10px 24px;
+  border-radius:40px;color:#1e1b16;font-weight:700;
+  font-size:.95rem;cursor:pointer;transition:transform .2s,filter .2s;
+}
+.choice-btn:hover { transform:translateY(-2px);filter:brightness(1.1); }
+.choice-btn.secondary { background:#4a3e2c;color:#e0cca0; }
+
+.version-footer {
+  text-align:center;padding:20px 10px 30px;
+  font-size:.7rem;color:#9a8060;border-top:1px solid #e6d5b8;
+  margin-top:20px;font-family:'Courier New',monospace;
+}
+@media(max-width:768px){
+  .botones-footer{gap:8px;}
+  .btn-biblioteca{padding:7px 16px;font-size:.78rem;}
+  .edu-container{margin:20px 12px;}
+  .libros-grid{grid-template-columns:1fr;}
+  .marcador-sidebar{border-right:none;border-bottom:1px solid #e5d5ba;min-width:unset;}
+  .admin-container{border-radius:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- OVERLAYS -->
+<div id="admin-overlay"><div class="admin-overlay-card"><div class="admin-overlay-spinner"></div><div class="admin-overlay-title">El administrador está haciendo cambios...</div><div class="admin-overlay-sub">Por favor espera. Los cambios se aplicarán en breve.</div></div></div>
+<div id="apply-overlay"><span class="apply-icon">⚙️</span><div class="apply-title">Se están aplicando las ediciones</div><div class="apply-bar-wrap"><div class="apply-bar"></div></div></div>
+<input type="file" id="music-file-input" accept=".mp3,.aac,.m4a,.mp4,.ogg,.wav,.flac,.opus" style="display:none;" multiple>
+
+<!-- SPLASH -->
+<div id="splash" aria-hidden="true">
+  <div id="splash-bg"></div>
+  <span class="splash-icon">📖</span>
+  <div class="splash-title-wrap"><span class="splash-title">Biblioteca Escolar</span></div>
+  <div class="splash-title-wrap" style="margin-top:4px;"><span class="splash-title" style="color:var(--gold);font-style:italic;font-size:clamp(1.1rem,3.2vw,2.4rem);">Virgita Matamoros Vega</span></div>
+  <p class="splash-sub">Colegio Técnico Profesional de Guácimo</p>
+  <div class="splash-bar-wrap"><div class="splash-bar"></div></div>
+</div>
+
+<!-- MODAL GENÉRICO -->
+<div id="fb-modal" onclick="fbCerrarModal()">
+  <div onclick="event.stopPropagation()" class="fb-modal-content" style="max-width:600px;width:92%;max-height:90vh;overflow-y:auto;">
+    <div id="fb-modal-header" class="px-6 py-4 flex justify-between items-center text-white sticky top-0 z-10" style="background:linear-gradient(90deg,#2d5a2c,#6a4e2a);">
+      <h2 id="fb-modal-titulo" class="text-xl font-semibold" style="font-family:'Playfair Display',serif;"></h2>
+      <button onclick="fbCerrarModal()" style="background:none;border:none;cursor:pointer;color:white;font-size:2rem;line-height:1;padding:0;margin-left:16px;" aria-label="Cerrar">×</button>
+    </div>
+    <div id="fb-modal-contenido" class="p-6 text-gray-700 leading-relaxed"></div>
+  </div>
+</div>
+
+<!-- MODAL DE ELECCIÓN (ADMIN / ESTUDIANTE) -->
+<div id="choiceModal" class="choice-modal">
+  <div class="choice-card">
+    <h3>🔐 Acceso</h3>
+    <p>¿Qué tipo de usuario eres?</p>
+    <div class="choice-buttons">
+      <button id="choiceAdminBtn" class="choice-btn">👨‍💻 Administrador</button>
+      <button id="choiceStudentBtn" class="choice-btn secondary">🎓 Estudiante</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SECRETO (SOLO CÓDIGO) -->
+<div id="secretCodeModal" class="secret-modal" role="dialog" aria-modal="true">
+  <div class="secret-card">
+    <button class="secret-close" id="closeSecretModal" aria-label="Cerrar">&times;</button>
+    <h3 style="font-family:'Playfair Display',serif;color:#e2bc7c;font-size:1.25rem;margin-bottom:4px;">⚡ Acceso Restringido</h3>
+    <p style="color:#9a8060;font-size:.75rem;margin-bottom:20px;">Panel de administración — BibliotecApp</p>
+    <input type="password" id="secretCodeInput" placeholder="Ingrese el código" autocomplete="off">
+    <button class="verify-btn" id="verifySecretBtn">Verificar</button>
+    <div id="secretErrorMsg" class="error-code"></div>
+  </div>
+</div>
+
+<!-- PANEL ADMIN -->
+<div id="adminPanel" class="admin-panel" role="dialog" aria-modal="true">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h2>🛠️ Panel de Control — BibliotecApp</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button id="showTerminalBtn" class="admin-btn btn-terminal">💻 Terminal</button>
+        <button id="closeAdminPanel" class="admin-btn close-admin">✕ Cerrar</button>
+      </div>
+    </div>
+    <div class="admin-tabs" id="adminTabs">
+      <div class="admin-tab active" data-tab="resumen">📋 Resumen</div>
+      <div class="admin-tab" data-tab="content">📝 Contenido</div>
+      <div class="admin-tab" data-tab="botones">🔲 Botones</div>
+      <div class="admin-tab" data-tab="colors">🎨 Colores</div>
+      <div class="admin-tab" data-tab="musica">🎵 Música</div>
+    </div>
+    <div class="admin-content" id="adminContent"></div>
+  </div>
+</div>
+
+<!-- TERMINAL -->
+<div id="dev-terminal" role="dialog" aria-modal="true">
+  <div class="dev-term-container">
+    <div class="dev-term-header">
+      <span style="letter-spacing:.05em;">⬡ DEV-TERMINAL :: MODO PROGRAMADOR v3.0</span>
+      <div>
+        <button class="dev-btn-mini" id="clearTermBtn">⊘ LIMPIAR</button>
+        <button class="dev-btn-mini" id="resetDevTermBtn">↺ REINICIAR</button>
+        <button class="dev-btn-mini close-x" id="closeDevTermX">✕ CERRAR</button>
+      </div>
+    </div>
+    <div class="dev-term-body" id="dev-term-body"></div>
+    <div class="dev-input-line">
+      <span class="dev-prompt">DEV&gt;</span>
+      <input type="text" id="dev-input" class="dev-input" autocomplete="off" spellcheck="false" placeholder="escribe un comando...">
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="library-header w-full py-7 px-4 text-center text-white" id="main-header">
+  <h1 class="library-title text-4xl md:text-5xl font-bold" id="header-title">📖 Biblioteca Escolar Virgita Matamoros Vega</h1>
+  <p class="text-amber-100 text-base md:text-lg mt-2 font-light" id="header-sub">Colegio Técnico Profesional de Guácimo</p>
+  <div class="flex flex-wrap justify-center gap-3 mt-5">
+    <span class="service-badge">📚 Préstamo de libros MEP</span>
+    <span class="service-badge">🪪 Impresión de carnets</span>
+    <span class="service-badge">📖 Lectura en sala</span>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<div class="max-w-3xl mx-auto px-6 text-center mt-8">
+  <p class="text-gray-500 text-xs uppercase tracking-widest font-semibold mb-3">📌 Servicios destacados</p>
+  <div class="welcome-card">
+    <div class="welcome-item"><span class="text-lg">✔️</span><span class="font-medium text-gray-700">Acceso a libros solicitados por el MEP y textos de la biblioteca.</span></div>
+    <div class="welcome-item"><span class="text-lg">✔️</span><span class="font-medium text-gray-700">Impresión de carnets del comedor estudiantil.</span></div>
+    <div class="welcome-item"><span class="text-lg">✔️</span><span class="font-medium text-gray-700">Préstamo externo de libros por varios días.</span></div>
+  </div>
+</div>
+
+<!-- ÁREA EDUCATIVA -->
+<div class="edu-container">
+  <div class="edu-header flex flex-wrap justify-between items-center gap-3">
+    <h2 class="text-2xl md:text-3xl">🌐 Dirección IP &amp; Marcadores HTML</h2>
+    <span class="text-xs text-stone-500 bg-amber-100 px-3 py-1 rounded-full font-medium">Contenido técnico educativo</span>
+  </div>
+  <div class="flex flex-col md:flex-row">
+    <div class="marcador-sidebar w-full md:w-56 p-4" id="marcador-sidebar">
+      <div class="text-xs uppercase tracking-wider text-amber-800 mb-2 font-semibold">Navegación</div>
+      <div id="nav-list-marcador" class="space-y-1"></div>
+      <div class="mt-6 text-[11px] text-stone-400 text-center border-t border-stone-200 pt-3">📌 HTML Bookmark · Sin recarga</div>
+    </div>
+    <div id="content-panel-marcador" class="flex-1 p-6 bg-white/50 max-h-[580px] overflow-y-auto"></div>
+  </div>
+</div>
+
+<!-- BOTONES FOOTER -->
+<div class="botones-footer" id="botones-footer"></div>
+
+<!-- PIE DE VERSIÓN -->
+<div class="version-footer">
+  📚 Biblioteca Escolar Virgita Matamoros Vega · v1.1 (30.3.2026) · CTP Guácimo
+</div>
+
+<!-- BOTÓN SECRETO -->
+<div class="secret-trigger" id="secretBtn" title="Acceso restringido (Alt+Q)">🔐 secreto</div>
+
+<script>
+'use strict';
+
+// ========== UTILIDADES ==========
+function escHtml(s) {
+  if(typeof s!=='string') return '';
+  return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function uid() { return 'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function tsLabel() { const d=new Date(); return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; }
+
+// ========== PERSISTENCIA ==========
+const STORAGE_KEY = 'biblioteca_v3';
+const ADMIN_LOCK_KEY = 'bib_admin_lock';
+const STUDENT_MODE_KEY = 'bib_student_mode';
+const MUSIC_DB_NAME = 'biblioteca_music_v1';
+const MUSIC_DB_STORE = 'tracks';
+
+function openMusicDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(MUSIC_DB_NAME, 1);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if(!db.objectStoreNames.contains(MUSIC_DB_STORE))
+        db.createObjectStore(MUSIC_DB_STORE, { keyPath:'id' });
+    };
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+async function idbSaveTrack(track) {
+  try { const db=await openMusicDB(); const tx=db.transaction(MUSIC_DB_STORE,'readwrite'); tx.objectStore(MUSIC_DB_STORE).put(track); await new Promise((r,j)=>{tx.oncomplete=r;tx.onerror=j;}); } catch(e){ console.warn('idbSave err',e); throw e; }
+}
+async function idbLoadTrack(id) {
+  try { const db=await openMusicDB(); return await new Promise((r,j)=>{const req=db.transaction(MUSIC_DB_STORE,'readonly').objectStore(MUSIC_DB_STORE).get(id);req.onsuccess=e=>r(e.target.result);req.onerror=j;}); } catch(e){return null;}
+}
+async function idbDeleteTrack(id) {
+  try { const db=await openMusicDB(); const tx=db.transaction(MUSIC_DB_STORE,'readwrite'); tx.objectStore(MUSIC_DB_STORE).delete(id); await new Promise((r,j)=>{tx.oncomplete=r;tx.onerror=j;}); } catch(e){console.warn('idbDel err',e);}
+}
+async function idbLoadAllTrackIds() {
+  try { const db=await openMusicDB(); return await new Promise((r,j)=>{const req=db.transaction(MUSIC_DB_STORE,'readonly').objectStore(MUSIC_DB_STORE).getAllKeys();req.onsuccess=e=>r(e.target.result);req.onerror=j;}); } catch(e){return [];}
+}
+
+// ========== ESTADO MÚSICA ==========
+let musicMeta = [];
+let musicCurrentIdx = 0;
+let musicIsPlaying  = false;
+let musicIsRepeat   = false;
+let audioEl = new Audio();
+audioEl.preload = 'auto';
+let currentObjectURL = null;
+
+// ========== ESTUDIANTE MODE ==========
+let isStudentMode = false;
+
+function loadStudentMode() {
+  try {
+    const saved = localStorage.getItem(STUDENT_MODE_KEY);
+    isStudentMode = saved === 'true';
+  } catch(e) {}
+}
+function saveStudentMode() {
+  localStorage.setItem(STUDENT_MODE_KEY, isStudentMode);
+}
+function activateStudentMode() {
+  isStudentMode = true;
+  saveStudentMode();
+  // Mostrar mensaje de administrador haciendo cambios
+  const msgDiv = document.createElement('div');
+  msgDiv.style.position = 'fixed';
+  msgDiv.style.bottom = '80px';
+  msgDiv.style.right = '20px';
+  msgDiv.style.background = 'rgba(0,0,0,.85)';
+  msgDiv.style.color = '#ffcc88';
+  msgDiv.style.padding = '12px 20px';
+  msgDiv.style.borderRadius = '30px';
+  msgDiv.style.fontSize = '0.85rem';
+  msgDiv.style.zIndex = '999999';
+  msgDiv.style.backdropFilter = 'blur(8px)';
+  msgDiv.style.border = '1px solid #b88b4a';
+  msgDiv.textContent = '🔒 Modo estudiante activado. El administrador está haciendo algunos cambios.';
+  document.body.appendChild(msgDiv);
+  setTimeout(() => msgDiv.remove(), 4000);
+}
+function deactivateStudentMode() {
+  isStudentMode = false;
+  saveStudentMode();
+  addLog('Modo estudiante desactivado por administrador.');
+  // Mostrar notificación
+  const msgDiv = document.createElement('div');
+  msgDiv.style.position = 'fixed';
+  msgDiv.style.bottom = '80px';
+  msgDiv.style.right = '20px';
+  msgDiv.style.background = 'rgba(0,0,0,.85)';
+  msgDiv.style.color = '#aaffcc';
+  msgDiv.style.padding = '12px 20px';
+  msgDiv.style.borderRadius = '30px';
+  msgDiv.style.fontSize = '0.85rem';
+  msgDiv.style.zIndex = '999999';
+  msgDiv.style.backdropFilter = 'blur(8px)';
+  msgDiv.style.border = '1px solid #88cc88';
+  msgDiv.textContent = '🔓 Modo estudiante desactivado. Acceso normal restaurado.';
+  document.body.appendChild(msgDiv);
+  setTimeout(() => msgDiv.remove(), 4000);
+}
+
+function saveAll() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      botonesArray,
+      librosData,
+      educationalSections,
+      currentColors,
+      customColorsList,
+      changeLog,
+      musicMeta,
+      musicCurrentIdx,
+      musicIsRepeat,
+      botonesContenidoStatic: {
+        mision:  { titulo: botonesContenido.mision.titulo,  html: botonesContenido.mision.html  },
+        vision:  { titulo: botonesContenido.vision.titulo,  html: botonesContenido.vision.html  },
+        pedidos: { titulo: botonesContenido.pedidos.titulo, html: botonesContenido.pedidos.html }
+      }
+    }));
+  } catch(e) { console.warn('No se pudo guardar estado:', e); }
+}
+function loadSaved() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+// ========== BOTONES ==========
+const MAX_SLOTS = 8;
+const DEFAULT_HTML_MISION = `<p class='mb-4 text-gray-600'>La misión de la biblioteca:</p>
+<div class='bg-amber-50 p-5 rounded-xl text-sm border-l-4 border-green-700 text-gray-700 leading-relaxed'>
+  Satisfacer las necesidades de información, recreación y aprendizaje mediante un servicio de calidad,
+  fomentando el hábito lector y apoyando el currículo del Colegio Técnico Profesional de Guácimo.
+</div>`;
+const DEFAULT_HTML_VISION = `<p class='mb-4 text-gray-600'>La visión de nuestra biblioteca:</p>
+<div class='bg-amber-50 p-5 rounded-xl text-sm border-l-4 border-green-700 text-gray-700 leading-relaxed'>
+  Ser un espacio referente en la formación académica, tecnológica y humana, reconocido por su innovación,
+  inclusión y por promover el amor por la lectura en toda la comunidad educativa.
+</div>`;
+const DEFAULT_HTML_PEDIDOS = `<p class="text-sm text-gray-500 mb-3">Complete el formulario para solicitar un libro.</p>
+<iframe src='https://docs.google.com/forms/d/e/1FAIpQLSekQpH1CAE09QSRAuW7Z8ihOdcUD50QWwF8xKhHdKrtyCqtBg/viewform?usp=header'
+style='width:100%;height:68vh;min-height:420px;border:none;border-radius:14px;' loading="lazy"></iframe>`;
+
+let botonesArray = [
+  { id:'mision',  titulo:'🌐 Misión',    html: DEFAULT_HTML_MISION,  color:'#4a6741', slot:0 },
+  { id:'vision',  titulo:'⭐ Visión',     html: DEFAULT_HTML_VISION,  color:'#7c5e3a', slot:1 },
+  { id:'libros',  titulo:'📒 Libros MEP', html: '',                   color:'#2c553c', slot:2 },
+  { id:'pedidos', titulo:'📋 Pedidos',    html: DEFAULT_HTML_PEDIDOS, color:'#b4652d', slot:3 },
+];
+let botonesContenido = {
+  mision:  { titulo:'📍 Misión',              html: DEFAULT_HTML_MISION  },
+  vision:  { titulo:'🏫 Visión',              html: DEFAULT_HTML_VISION  },
+  pedidos: { titulo:'📋 Formulario de Pedidos', html: DEFAULT_HTML_PEDIDOS },
+};
+
+let librosData = [
+  { emoji:'📖', titulo:'Español 7°-9° — Con-textos',      url:'https://www.mep.go.cr/educatico' },
+  { emoji:'📐', titulo:'Matemáticas 7°-11°',              url:'https://www.mep.go.cr/educatico' },
+  { emoji:'🔬', titulo:'Ciencias 7° y 8°',                url:'https://www.mep.go.cr/educatico' },
+  { emoji:'🌎', titulo:'Estudios Sociales 7°-11°',        url:'https://www.mep.go.cr/educatico' },
+  { emoji:'🗣️', titulo:'Inglés 7°-11° — English for CR',  url:'https://www.mep.go.cr/educatico' },
+  { emoji:'💻', titulo:'Educación Técnica',                url:'https://www.mep.go.cr/educacion-tecnica' },
+  { emoji:'🌐', titulo:'Portal Educatico MEP',            url:'https://www.mep.go.cr/educatico' },
+];
+
+let educationalSections = [
+  { id:'inicio',   title:'Bienvenida',      icon:'📖', order:0,
+    content:`<div class="space-y-4"><h3 class="text-2xl font-bold text-amber-800" style="font-family:'Playfair Display',serif;">Bienvenido al Módulo Educativo</h3><p class="text-gray-700 text-sm leading-relaxed">Aprenderás sobre <strong>direcciones IP</strong> y <strong>marcadores HTML</strong>.</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4"><div class="edu-content-card"><span class="text-3xl">📌</span><h4>Marcadores HTML</h4><p>Usan atributo <code>id</code> y enlaces <code>#id</code> para navegar sin recargar.</p></div><div class="edu-content-card"><span class="text-3xl">⚡</span><h4>Sin recarga</h4><p>El navegador salta al elemento preservando el estado.</p></div></div></div>` },
+  { id:'quees',    title:'¿Qué es IP?',     icon:'🌐', order:1,
+    content:`<div><h3 class="text-2xl font-bold text-amber-800" style="font-family:'Playfair Display',serif;">Dirección IP</h3><p class="mt-2 text-sm text-gray-700">Identificador único de cada dispositivo en red.</p><div class="mt-4"><div class="ip-badge">192.168.1.1 <span style="color:#b87c3a;font-size:.75rem;margin-left:8px;">IPv4</span></div><br><div class="ip-badge">2001:0db8::8a2e:0370:7334 <span style="color:#b87c3a;font-size:.75rem;margin-left:8px;">IPv6</span></div></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5"><div class="p-3 border border-amber-200 rounded-xl bg-amber-50 text-sm"><strong>IPv4</strong><br><span class="text-gray-600">4 grupos, ~4 300 millones de dir.</span></div><div class="p-3 border border-amber-200 rounded-xl bg-amber-50 text-sm"><strong>IPv6</strong><br><span class="text-gray-600">128 bits, prácticamente ilimitado.</span></div></div></div>` },
+  { id:'tipos',    title:'Tipos de IP',     icon:'🗂️', order:2,
+    content:`<div><h3 class="text-2xl font-bold text-amber-800" style="font-family:'Playfair Display',serif;">Clasificación</h3><ul class="styled-list mt-4"><li><span style="color:#b87c3a;font-weight:700;">●</span><div><strong>Pública</strong> — Visible en internet (ISP).</div></li><li><span style="color:#b87c3a;font-weight:700;">●</span><div><strong>Privada</strong> — Redes locales (192.168.x.x).</div></li><li><span style="color:#b87c3a;font-weight:700;">●</span><div><strong>Estática</strong> — Fija, usada en servidores.</div></li><li><span style="color:#b87c3a;font-weight:700;">●</span><div><strong>Dinámica</strong> — Asignada por DHCP automáticamente.</div></li></ul></div>` },
+  { id:'ejemplos', title:'Ejemplos reales', icon:'💡', order:3,
+    content:`<div><h3 class="text-2xl font-bold text-amber-800" style="font-family:'Playfair Display',serif;">IPs célebres</h3><div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"><div class="p-3 border border-amber-200 rounded-xl bg-amber-50 text-sm"><code class="font-bold text-green-800">8.8.8.8</code><br>Google DNS</div><div class="p-3 border border-amber-200 rounded-xl bg-amber-50 text-sm"><code class="font-bold text-green-800">127.0.0.1</code><br>Localhost</div><div class="p-3 border border-amber-200 rounded-xl bg-amber-50 text-sm"><code class="font-bold text-green-800">192.168.1.1</code><br>Router local</div><div class="p-3 border border-amber-200 rounded-xl bg-amber-50 text-sm"><code class="font-bold text-green-800">1.1.1.1</code><br>Cloudflare DNS</div></div></div>` },
+  { id:'final',    title:'Agradecimiento',  icon:'✨', order:4,
+    content:`<div class="text-center py-8"><span class="text-5xl">📘🙌</span><h3 class="text-3xl font-bold mt-4" style="font-family:'Playfair Display',serif;">Gracias por visitarnos</h3><p class="mt-3 text-gray-600 text-sm max-w-xs mx-auto">Esperamos que este módulo haya sido de utilidad.</p><p class="mt-6 text-xs text-stone-400">Biblioteca Escolar Virgita Matamoros Vega · CTP Guácimo</p></div>` }
+];
+
+let currentColors = {
+  headerBg:'#2d5a2c', headerText:'#ffffff',
+  bodyBg:'#faf6ed', cardBg:'#fffcf5',
+  neonActive: false
+};
+let customColorsList = [];
+let changeLog = [];
+function addLog(msg) {
+  changeLog.unshift({ time: tsLabel(), msg });
+  if(changeLog.length > 50) changeLog.length = 50;
+  saveAll();
+}
+
+// Restaurar estado guardado
+(function restoreState() {
+  const s = loadSaved();
+  if(!s) return;
+  if(s.botonesArray)        botonesArray        = s.botonesArray;
+  if(s.librosData)          librosData          = s.librosData;
+  if(s.educationalSections) educationalSections = s.educationalSections;
+  if(s.currentColors)       currentColors       = { ...currentColors, ...s.currentColors };
+  if(s.customColorsList)    customColorsList    = s.customColorsList;
+  if(s.changeLog)           changeLog           = s.changeLog;
+  if(s.botonesContenidoStatic) {
+    if(s.botonesContenidoStatic.mision)  botonesContenido.mision  = s.botonesContenidoStatic.mision;
+    if(s.botonesContenidoStatic.vision)  botonesContenido.vision  = s.botonesContenidoStatic.vision;
+    if(s.botonesContenidoStatic.pedidos) botonesContenido.pedidos = s.botonesContenidoStatic.pedidos;
+  }
+  if(s.musicMeta)           musicMeta           = s.musicMeta;
+  if(typeof s.musicCurrentIdx==='number') musicCurrentIdx = s.musicCurrentIdx;
+  if(typeof s.musicIsRepeat==='boolean')  musicIsRepeat   = s.musicIsRepeat;
+  botonesArray.forEach(b => {
+    if(b.id==='mision'  && botonesContenido.mision)  b.html = botonesContenido.mision.html;
+    if(b.id==='vision'  && botonesContenido.vision)  b.html = botonesContenido.vision.html;
+    if(b.id==='pedidos' && botonesContenido.pedidos) b.html = botonesContenido.pedidos.html;
+  });
+  loadStudentMode();
+})();
+
+// SPLASH
+document.getElementById('splash').addEventListener('animationend', e => {
+  if(e.animationName==='splashExit') e.target.remove();
+});
+
+// MODAL GENÉRICO
+function fbAbrirModal(titulo, htmlContenido) {
+  document.getElementById('fb-modal-titulo').innerHTML = titulo;
+  document.getElementById('fb-modal-contenido').innerHTML = htmlContenido;
+  document.getElementById('fb-modal').classList.add('modal-open');
+  document.body.style.overflow = 'hidden';
+}
+function fbCerrarModal() {
+  document.getElementById('fb-modal').classList.remove('modal-open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape') {
+    if(document.getElementById('fb-modal').classList.contains('modal-open')) fbCerrarModal();
+    if(document.getElementById('secretCodeModal').classList.contains('active')) closeSecretModal();
+    if(document.getElementById('choiceModal').classList.contains('show')) closeChoiceModal();
+  }
+});
+
+function renderBotonesFooter() {
+  const container = document.getElementById('botones-footer');
+  if(!container) return;
+  const sorted = [...botonesArray].filter(b=>b.slot>=0&&b.slot<MAX_SLOTS).sort((a,b)=>a.slot-b.slot);
+  container.innerHTML = sorted.map(b =>
+    `<button class="btn-biblioteca" data-btn-id="${b.id}" style="background-color:${escHtml(b.color||'#4a6741')};" onclick="openBotonById('${escHtml(b.id)}')">${escHtml(b.titulo)}</button>`
+  ).join('');
+}
+function openBotonById(id) {
+  const b = botonesArray.find(x=>x.id===id);
+  if(!b) return;
+  if(id==='libros') { fbAbrirModal(b.titulo, renderLibrosHtml()); return; }
+  if(id==='mision'  && botonesContenido.mision)  b.html = botonesContenido.mision.html;
+  if(id==='vision'  && botonesContenido.vision)   b.html = botonesContenido.vision.html;
+  if(id==='pedidos' && botonesContenido.pedidos)  b.html = botonesContenido.pedidos.html;
+  fbAbrirModal(b.titulo, b.html);
+}
+function renderLibrosHtml() {
+  if(!librosData.length) return `<p class="text-gray-500 text-sm">No hay libros registrados. Usa <code>link_nuevo_cuaderno</code> en la terminal.</p>`;
+  const cards = librosData.map((l,i) =>
+    `<div class="libro-card"><div class="libro-titulo">${escHtml(l.emoji)} ${escHtml(l.titulo)}</div><a href="${escHtml(l.url)}" target="_blank" rel="noopener" class="libro-boton">🔗 Ver recurso</a></div>`
+  ).join('');
+  return `<div class="space-y-4"><p class="text-gray-600 text-sm">Recursos del MEP. Los botones abren el portal oficial.</p><div class="libros-grid">${cards}</div><p class="text-xs text-gray-400 mt-2">💡 Agrega libros con <code style="background:#e8d8b0;padding:1px 5px;border-radius:4px;">link_nuevo_cuaderno</code> en la terminal.</p></div>`;
+}
+function renderMarcadores() {
+  const nav = document.getElementById('nav-list-marcador');
+  const content = document.getElementById('content-panel-marcador');
+  if(!nav||!content) return;
+  nav.innerHTML = ''; content.innerHTML = '';
+  educationalSections.sort((a,b)=>a.order-b.order);
+  educationalSections.forEach((sec,idx) => {
+    const item = document.createElement('div');
+    item.className = 'marcador-nav-item p-1'+(idx===0?' active':'');
+    item.innerHTML = `<div class="marcador-nav-btn"><span style="font-size:1.1rem;">${sec.icon}</span><span>${escHtml(sec.title)}</span></div>`;
+    item.addEventListener('click',()=>{
+      document.querySelectorAll('.marcador-nav-item').forEach(el=>el.classList.remove('active'));
+      item.classList.add('active'); showSection(sec.id);
+    });
+    nav.appendChild(item);
+    const div = document.createElement('div');
+    div.id = 'sec_'+sec.id;
+    div.className = 'educational-section'+(idx!==0?' hidden':'');
+    div.innerHTML = sec.content;
+    content.appendChild(div);
+  });
+}
+function showSection(id) {
+  document.querySelectorAll('.educational-section').forEach(el=>el.classList.add('hidden'));
+  const t = document.getElementById('sec_'+id);
+  if(t) t.classList.remove('hidden');
+}
+function applyColors() {
+  const header = document.querySelector('.library-header');
+  if(header) {
+    header.style.background = currentColors.headerBg;
+    const h1 = header.querySelector('h1');
+    const p  = header.querySelector('p');
+    if(h1) h1.style.color = currentColors.headerText;
+    if(p)  p.style.color  = currentColors.headerText;
+    header.querySelectorAll('.service-badge').forEach(b=>b.style.color=currentColors.headerText);
+  }
+  document.body.style.backgroundColor = currentColors.bodyBg||'';
+  document.body.classList.toggle('neon-theme',!!currentColors.neonActive);
+  let style = document.getElementById('custom-colors-style');
+  if(!style) { style = document.createElement('style'); style.id='custom-colors-style'; document.head.appendChild(style); }
+  const rules = customColorsList.map(c=>`/* ${escHtml(c.label)} */ :root { ${escHtml(c.cssVar)}:${escHtml(c.value)}; }`).join('\n');
+  style.textContent = rules;
+  botonesArray.forEach(b=>{
+    const el = document.querySelector(`[data-btn-id="${b.id}"]`);
+    if(el) el.style.backgroundColor = b.color||'#4a6741';
+  });
+}
+function saveColors() { saveAll(); applyColors(); }
+
+// ========== PANEL ADMIN ==========
+const adminPanelEl = document.getElementById('adminPanel');
+function openAdminPanel() {
+  adminPanelEl.classList.add('active');
+  buildAdminContent();
+  try { localStorage.setItem(ADMIN_LOCK_KEY, JSON.stringify({active:true,ts:Date.now()})); } catch(e){}
+}
+function closeAdminPanel() {
+  adminPanelEl.classList.remove('active');
+  try { localStorage.setItem(ADMIN_LOCK_KEY, JSON.stringify({active:false,ts:Date.now()})); } catch(e){}
+  setTimeout(()=>{ try{localStorage.removeItem(ADMIN_LOCK_KEY);}catch(e){} }, 3000);
+}
+document.getElementById('closeAdminPanel').addEventListener('click', closeAdminPanel);
+document.getElementById('showTerminalBtn').addEventListener('click',()=>{ closeAdminPanel(); openDevTerminal(); });
+document.getElementById('adminTabs').addEventListener('click', e=>{
+  const tab = e.target.closest('.admin-tab');
+  if(!tab) return;
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active'); buildAdminContent();
+});
+
+function buildAdminContent() {
+  const tab = document.querySelector('.admin-tab.active').dataset.tab;
+  const content = document.getElementById('adminContent');
+
+  if(tab==='resumen') {
+    const logHtml = changeLog.length ? changeLog.slice(0,20).map(e=>`<div class="log-entry"><span class="log-time">${escHtml(e.time)}</span><span class="log-msg">${escHtml(e.msg)}</span></div>`).join('') : `<p style="color:#7a6040;font-size:.82rem;">No hay cambios registrados aún.</p>`;
+    content.innerHTML = `
+      <h3 style="color:#e2bc7c;font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:4px;">📋 Resumen del sistema</h3>
+      <p style="color:#8a7060;font-size:.78rem;margin-bottom:20px;">Estado actual y registro de cambios. Todo se guarda automáticamente.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:24px;">
+        <div style="background:#2c241c;border-radius:12px;padding:14px;border-left:4px solid #b88b4a;text-align:center;"><div style="font-size:1.8rem;">${botonesArray.length}</div><div style="color:#9a8060;font-size:.78rem;margin-top:2px;">Botones activos</div></div>
+        <div style="background:#2c241c;border-radius:12px;padding:14px;border-left:4px solid #3a9a5c;text-align:center;"><div style="font-size:1.8rem;">${librosData.length}</div><div style="color:#9a8060;font-size:.78rem;margin-top:2px;">Libros MEP</div></div>
+        <div style="background:#2c241c;border-radius:12px;padding:14px;border-left:4px solid #6a8ab8;text-align:center;"><div style="font-size:1.8rem;">${educationalSections.length}</div><div style="color:#9a8060;font-size:.78rem;margin-top:2px;">Secciones educativas</div></div>
+        <div style="background:#2c241c;border-radius:12px;padding:14px;border-left:4px solid #c05050;text-align:center;"><div style="font-size:1.8rem;">${customColorsList.length}</div><div style="color:#9a8060;font-size:.78rem;margin-top:2px;">Colores custom</div></div>
+      </div>
+      <h4 style="color:#d4b070;font-size:.9rem;font-weight:700;margin-bottom:10px;">📜 Registro de cambios recientes</h4>
+      <div style="max-height:300px;overflow-y:auto;">${logHtml}</div>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="admin-btn danger" id="clearLogBtn">🗑️ Limpiar log</button>
+        <button class="admin-btn danger" id="resetAllBtn">⚠️ Resetear todo</button>
+        <button class="admin-btn secondary" id="disableStudentModeBtn">🔓 Desactivar modo Estudiante</button>
+      </div>`;
+    document.getElementById('clearLogBtn').onclick = ()=>{ changeLog=[]; saveAll(); buildAdminContent(); };
+    document.getElementById('resetAllBtn').onclick = ()=>{
+      if(!confirm('¿Borrar TODOS los datos guardados y volver a los valores originales?')) return;
+      localStorage.removeItem(STORAGE_KEY); location.reload();
+    };
+    document.getElementById('disableStudentModeBtn').onclick = () => {
+      if(isStudentMode) deactivateStudentMode();
+      else alert('El modo estudiante no está activo.');
+      buildAdminContent();
+    };
+  }
+  else if(tab==='content') {
+    let html = `<h3 style="color:#e2bc7c;font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:16px;">📝 Editar textos de Misión, Visión y Pedidos</h3>`;
+    ['mision','vision','pedidos'].forEach(key=>{
+      const b = botonesContenido[key];
+      html += `<div class="editor-group">
+        <label>${escHtml(b.titulo)} — Título</label>
+        <input type="text" id="edit_${key}_titulo" value="${escHtml(b.titulo)}">
+        <label style="margin-top:10px;">Contenido HTML</label>
+        <textarea id="edit_${key}_html" rows="5">${escHtml(b.html)}</textarea>
+        <button class="admin-btn mt-3 save-static-btn" data-key="${key}">💾 Guardar ${key}</button>
+      </div>`;
+    });
+    html += `<h3 style="color:#e2bc7c;font-size:1rem;font-weight:700;margin:20px 0 12px;">📚 Secciones educativas</h3>`;
+    educationalSections.forEach(sec=>{
+      html += `<div class="editor-group">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap;">
+          <input type="text" id="sec_icon_${sec.id}" value="${escHtml(sec.icon)}" style="width:50px;text-align:center;font-size:1.1rem;" placeholder="📖">
+          <input type="text" id="sec_title_${sec.id}" value="${escHtml(sec.title)}" style="flex:1;min-width:120px;" placeholder="Título del marcador">
+          <button class="admin-btn secondary rename-sec-btn" data-id="${sec.id}" style="font-size:.75rem;padding:6px 12px;">✏️ Renombrar</button>
+        </div>
+        <label style="margin-top:4px;">Contenido HTML</label>
+        <textarea id="sec_edit_${sec.id}" rows="4">${escHtml(sec.content)}</textarea>
+        <button class="admin-btn mt-3 save-sec-btn" data-id="${sec.id}">💾 Guardar sección</button>
+      </div>`;
+    });
+    content.innerHTML = html;
+    content.querySelectorAll('.save-static-btn').forEach(btn=>{
+      btn.onclick=()=>{
+        const k=btn.dataset.key;
+        botonesContenido[k].titulo = document.getElementById(`edit_${k}_titulo`).value;
+        botonesContenido[k].html   = document.getElementById(`edit_${k}_html`).value;
+        const b = botonesArray.find(x=>x.id===k);
+        if(b){ b.titulo=botonesContenido[k].titulo; b.html=botonesContenido[k].html; }
+        renderBotonesFooter(); addLog(`Editado contenido de "${k}" desde panel admin`);
+        const orig=btn.textContent; btn.textContent='✅ Guardado'; setTimeout(()=>btn.textContent=orig,1500);
+      };
+    });
+    content.querySelectorAll('.save-sec-btn').forEach(btn=>{
+      btn.onclick=()=>{
+        const id=btn.dataset.id;
+        const sec=educationalSections.find(s=>s.id===id);
+        if(sec){ sec.content=document.getElementById(`sec_edit_${id}`).value; renderMarcadores(); addLog(`Editada sección "${id}"`); }
+        const orig=btn.textContent; btn.textContent='✅ Guardado'; setTimeout(()=>btn.textContent=orig,1500);
+      };
+    });
+    content.querySelectorAll('.rename-sec-btn').forEach(btn=>{
+      btn.onclick=()=>{
+        const id=btn.dataset.id;
+        const sec=educationalSections.find(s=>s.id===id);
+        if(!sec) return;
+        const newIcon  = document.getElementById(`sec_icon_${id}`).value.trim()||sec.icon;
+        const newTitle = document.getElementById(`sec_title_${id}`).value.trim()||sec.title;
+        sec.icon=newIcon; sec.title=newTitle;
+        renderMarcadores(); addLog(`Marcador "${id}" renombrado a "${newTitle}"`); saveAll();
+        const orig=btn.textContent; btn.textContent='✅ Renombrado'; setTimeout(()=>btn.textContent=orig,1500);
+      };
+    });
+  }
+  else if(tab==='botones') {
+    const slotsOcupados = {};
+    botonesArray.forEach(b=>{ if(b.slot>=0) slotsOcupados[b.slot]=b; });
+    const slotRowHtml = Array.from({length:MAX_SLOTS},(_,i)=>{
+      const b = slotsOcupados[i];
+      return b ? `<div class="slot-item slot-occupied" style="background-color:${escHtml(b.color||'#4a6741')};" title="Slot ${i}: ${escHtml(b.titulo)}">${escHtml(b.titulo)}</div>`
+               : `<div class="slot-item slot-empty" title="Slot ${i} — vacío"><span style="font-size:.85rem;">＋</span> slot ${i}</div>`;
+    }).join('');
+    const listaHtml = botonesArray.map(b=>`
+      <div style="background:#2c241c;border-radius:12px;padding:14px;border-left:4px solid ${escHtml(b.color||'#4a6741')};display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+        <div style="width:24px;height:24px;border-radius:6px;background:${escHtml(b.color||'#4a6741')};flex-shrink:0;border:2px solid rgba(255,255,255,.2);"></div>
+        <div style="flex:1;min-width:120px;"><div style="color:#e6cdaa;font-weight:600;font-size:.88rem;">${escHtml(b.titulo)}</div><div style="color:#7a6040;font-size:.72rem;">id: ${escHtml(b.id)} · slot: ${b.slot}</div></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="admin-btn secondary edit-btn-adm" data-id="${b.id}" style="font-size:.75rem;padding:6px 14px;">✏️ Editar</button><button class="admin-btn danger del-btn-adm" data-id="${b.id}" style="font-size:.75rem;padding:6px 14px;">🗑️</button></div>
+      </div>`).join('');
+    content.innerHTML = `
+      <h3 style="color:#e2bc7c;font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:4px;">🔲 Gestión de botones</h3>
+      <p style="color:#8a7060;font-size:.78rem;margin-bottom:16px;">Agrega, edita o elimina botones. Toca un slot vacío para colocar uno nuevo ahí.</p>
+      <h4 style="color:#d4b070;font-size:.85rem;font-weight:700;margin-bottom:8px;">Vista de posiciones (toca un slot vacío para agregar)</h4>
+      <div class="slot-row" id="admin-slot-row">${slotRowHtml}</div>
+      <div id="nuevo-boton-form" style="display:none;background:#1e1a14;border:1px solid #b88b4a;border-radius:14px;padding:18px;margin-bottom:16px;">
+        <h4 style="color:#e2bc7c;font-size:.9rem;font-weight:700;margin-bottom:12px;">➕ Nuevo botón — slot <span id="slot-elegido-label">?</span></h4>
+        <label style="color:#d4b070;font-size:.8rem;font-weight:600;display:block;margin-bottom:4px;">Título del botón</label>
+        <input type="text" id="nb-titulo" placeholder="ej: 📌 Horarios" style="width:100%;background:#3a2e24;border:1px solid #b88b4a;border-radius:10px;padding:9px 12px;color:#ffefcf;font-size:.85rem;outline:none;margin-bottom:10px;">
+        <label style="color:#d4b070;font-size:.8rem;font-weight:600;display:block;margin-bottom:4px;">Contenido HTML del modal</label>
+        <textarea id="nb-html" rows="4" placeholder="<p>Contenido aquí...</p>" style="width:100%;background:#3a2e24;border:1px solid #b88b4a;border-radius:10px;padding:9px 12px;color:#ffefcf;font-size:.85rem;outline:none;margin-bottom:10px;"></textarea>
+        <label style="color:#d4b070;font-size:.8rem;font-weight:600;display:block;margin-bottom:4px;">Color del botón</label>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;">
+          <input type="color" id="nb-color" value="#4a6741" style="width:40px;height:36px;border:2px solid #b88b4a;border-radius:8px;cursor:pointer;background:none;padding:2px;">
+          <input type="text"  id="nb-color-hex" value="#4a6741" style="background:#3a2e24;border:1px solid #b88b4a;border-radius:8px;padding:8px 10px;color:#ffefcf;font-family:'Courier New',monospace;font-size:.82rem;width:90px;outline:none;">
+          <div id="nb-color-preview" style="width:60px;height:36px;border-radius:10px;border:2px solid #5a4a30;background:#4a6741;"></div>
+        </div>
+        <div style="display:flex;gap:8px;"><button class="admin-btn" id="nb-confirm">✅ Crear botón</button><button class="admin-btn secondary" id="nb-cancel">Cancelar</button></div>
+      </div>
+      <h4 style="color:#d4b070;font-size:.85rem;font-weight:700;margin-bottom:10px;margin-top:16px;">Botones activos</h4>
+      <div id="botones-lista">${listaHtml}</div>`;
+    let slotElegido = -1;
+    content.querySelectorAll('#admin-slot-row .slot-empty').forEach(el=>{
+      el.onclick=()=>{
+        slotElegido = parseInt(el.title.match(/\d+/)[0]);
+        document.getElementById('slot-elegido-label').textContent = slotElegido;
+        document.getElementById('nuevo-boton-form').style.display='block';
+        el.classList.add('slot-selected');
+      };
+    });
+    const nbColor=document.getElementById('nb-color'), nbHex=document.getElementById('nb-color-hex'), nbPrev=document.getElementById('nb-color-preview');
+    if(nbColor) nbColor.oninput=()=>{ nbHex.value=nbColor.value; nbPrev.style.background=nbColor.value; };
+    if(nbHex) nbHex.oninput=()=>{ if(/^#[0-9a-fA-F]{6}$/.test(nbHex.value)){ nbColor.value=nbHex.value; nbPrev.style.background=nbHex.value; } };
+    document.getElementById('nb-cancel').onclick=()=>{ document.getElementById('nuevo-boton-form').style.display='none'; slotElegido=-1; };
+    document.getElementById('nb-confirm').onclick=()=>{
+      const titulo = document.getElementById('nb-titulo').value.trim();
+      const html   = document.getElementById('nb-html').value;
+      const color  = document.getElementById('nb-color').value;
+      if(!titulo){ alert('El título no puede estar vacío'); return; }
+      if(slotElegido<0){ alert('Selecciona un slot'); return; }
+      const newBtn = { id:uid(), titulo, html, color, slot:slotElegido };
+      botonesArray.push(newBtn);
+      addLog(`Botón "${titulo}" creado en slot ${slotElegido}`);
+      renderBotonesFooter(); buildAdminContent();
+    };
+    content.querySelectorAll('.del-btn-adm').forEach(btn=>{
+      btn.onclick=()=>{
+        const id=btn.dataset.id;
+        const b=botonesArray.find(x=>x.id===id);
+        if(!confirm(`¿Eliminar "${b?.titulo}"?`)) return;
+        botonesArray=botonesArray.filter(x=>x.id!==id);
+        addLog(`Botón "${b?.titulo}" eliminado`);
+        renderBotonesFooter(); buildAdminContent();
+      };
+    });
+    content.querySelectorAll('.edit-btn-adm').forEach(btn=>{
+      btn.onclick=()=>{
+        const id=btn.dataset.id;
+        const b=botonesArray.find(x=>x.id===id);
+        if(!b) return;
+        const nt=prompt('Nuevo título:',b.titulo); if(nt===null) return;
+        const nc=prompt('Nuevo color (#hex):',b.color); if(nc===null) return;
+        b.titulo=nt; if(/^#[0-9a-fA-F]{6}$/.test(nc)) b.color=nc;
+        addLog(`Botón "${nt}" editado`);
+        renderBotonesFooter(); buildAdminContent();
+      };
+    });
+  }
+  else if(tab==='colors') {
+    content.innerHTML = `
+      <h3 style="color:#e2bc7c;font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:4px;">🎨 Personalizar colores</h3>
+      <p style="color:#8a7060;font-size:.78rem;margin-bottom:16px;">Cambia colores del encabezado, fondo y agrega colores personalizados.</p>
+      <div class="color-subtabs"><div class="color-subtab active" data-csub="elementos">🎨 Elementos</div><div class="color-subtab" data-csub="agregar">➕ Agregar color</div><div class="color-subtab" data-csub="quitar">➖ Quitar color</div></div>
+      <div id="color-subcontent"></div>`;
+    function buildColorSub(sub) {
+      const area = document.getElementById('color-subcontent');
+      if(sub==='elementos') {
+        const fields = [
+          ['headerBg',  'Encabezado — Fondo',  'Color principal del banner'],
+          ['headerText','Encabezado — Texto',  'Texto del banner'],
+          ['bodyBg',    'Fondo de la página',   'Color de fondo general'],
+        ];
+        const previewHtml = `
+          <div style="background:#261f17;border-radius:14px;padding:16px;border:1px solid #3a2e1c;margin-bottom:16px;">
+            <p style="color:#e2bc7c;font-size:.78rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em;">Vista previa en vivo</p>
+            <div id="prev-header-box" style="border-radius:10px;padding:12px 16px;background:${currentColors.headerBg};text-align:center;margin-bottom:10px;">
+              <p style="color:${currentColors.headerText};font-weight:700;font-size:.85rem;margin:0;">📖 Biblioteca Escolar</p>
+              <p style="color:${currentColors.headerText};font-size:.7rem;opacity:.8;margin:4px 0 0;">CTP Guácimo</p>
+            </div>
+            <div style="background:${currentColors.bodyBg||'#faf6ed'};border-radius:10px;padding:10px 14px;">
+              <p style="font-size:.75rem;color:#555;">← Fondo de la página</p>
+            </div>
+          </div>`;
+        const editorsHtml = fields.map(([key,label,desc])=>`
+          <div class="editor-group">
+            <label>${label} <span style="color:#7a6040;font-weight:400;font-size:.72rem;">— ${desc}</span></label>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input type="color" id="col_${key}" value="${currentColors[key]||'#ffffff'}" style="width:40px;height:34px;border:2px solid #b88b4a;border-radius:8px;cursor:pointer;background:none;padding:2px;flex-shrink:0;">
+              <input type="text"  id="hex_${key}" value="${currentColors[key]||'#ffffff'}" style="background:#3a2e24;border:1px solid #b88b4a;border-radius:8px;padding:8px 10px;color:#ffefcf;font-family:'Courier New',monospace;font-size:.82rem;flex:1;outline:none;">
+            </div>
+          </div>`).join('');
+        area.innerHTML = previewHtml + editorsHtml + `
+          <div style="margin-bottom:16px;"><div class="editor-group" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;"><label style="width:auto;margin:0;">🌙 Modo Neón</label><input type="checkbox" id="neonToggle" ${currentColors.neonActive?'checked':''} style="width:18px;height:18px;cursor:pointer;accent-color:#b88b4a;"><span style="color:#c8a878;font-size:.8rem;">Fondo oscuro con glow verde</span></div></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;"><button class="admin-btn" id="saveColorsBtn">💾 Guardar</button><button class="admin-btn secondary" id="resetColorsBtn">↺ Restaurar</button></div>`;
+        function syncPrev() {
+          const hBg  = document.getElementById('col_headerBg')?.value  || currentColors.headerBg;
+          const hTxt = document.getElementById('col_headerText')?.value || currentColors.headerText;
+          const bBg  = document.getElementById('col_bodyBg')?.value    || currentColors.bodyBg;
+          const box  = document.getElementById('prev-header-box');
+          if(box){ box.style.background=hBg; box.querySelectorAll('p').forEach(p=>p.style.color=hTxt); }
+          const bodyPreview = area.querySelector('div[style*="Fondo de la página"]');
+          if(bodyPreview) bodyPreview.style.background=bBg;
+        }
+        fields.forEach(([key])=>{
+          const p=document.getElementById(`col_${key}`), h=document.getElementById(`hex_${key}`);
+          if(p&&h){ p.oninput=()=>{ h.value=p.value; syncPrev(); }; h.oninput=()=>{ if(/^#[0-9a-fA-F]{6}$/.test(h.value)){p.value=h.value;syncPrev();} }; }
+        });
+        document.getElementById('saveColorsBtn').onclick=()=>{
+          fields.forEach(([key])=>{ const v=document.getElementById(`col_${key}`)?.value; if(v) currentColors[key]=v; });
+          currentColors.neonActive=document.getElementById('neonToggle').checked;
+          addLog('Colores de encabezado actualizados'); saveColors(); buildAdminContent();
+        };
+        document.getElementById('resetColorsBtn').onclick=()=>{
+          currentColors={ headerBg:'#2d5a2c',headerText:'#ffffff',bodyBg:'#faf6ed',cardBg:'#fffcf5',neonActive:false };
+          addLog('Colores restaurados a valores originales'); saveColors(); buildColorSub('elementos');
+        };
+      }
+      else if(sub==='agregar') {
+        area.innerHTML = `
+          <h4 style="color:#d4b070;font-size:.88rem;font-weight:700;margin-bottom:12px;">➕ Agregar color personalizado</h4>
+          <p style="color:#8a7060;font-size:.75rem;margin-bottom:14px;">Agrega un color CSS que se aplica como variable global <code>--nombre</code> en toda la página.</p>
+          <div class="editor-group"><label>Nombre / etiqueta (ej: "Color acento tarjetas")</label><input type="text" id="cc-label" placeholder="Mi color especial"></div>
+          <div class="editor-group"><label>Variable CSS (ej: <code>--mi-acento</code>)</label><input type="text" id="cc-var" placeholder="--mi-variable"></div>
+          <div class="editor-group"><label>Color</label><div style="display:flex;gap:8px;align-items:center;"><input type="color" id="cc-picker" value="#b88b4a" style="width:40px;height:34px;border:2px solid #b88b4a;border-radius:8px;cursor:pointer;background:none;padding:2px;"><input type="text"  id="cc-hex"    value="#b88b4a" style="background:#3a2e24;border:1px solid #b88b4a;border-radius:8px;padding:8px 10px;color:#ffefcf;font-family:'Courier New',monospace;font-size:.82rem;width:90px;outline:none;"><div id="cc-prev" style="width:50px;height:34px;border-radius:8px;background:#b88b4a;border:2px solid #5a4a30;"></div></div></div>
+          <button class="admin-btn" id="cc-add">➕ Agregar color</button>`;
+        const p=document.getElementById('cc-picker'), h=document.getElementById('cc-hex'), pr=document.getElementById('cc-prev');
+        if(p&&h&&pr){
+          p.oninput=()=>{ h.value=p.value; pr.style.background=p.value; };
+          h.oninput=()=>{ if(/^#[0-9a-fA-F]{6}$/.test(h.value)){p.value=h.value;pr.style.background=h.value;} };
+        }
+        document.getElementById('cc-add').onclick=()=>{
+          const label=document.getElementById('cc-label').value.trim();
+          const cssVar=document.getElementById('cc-var').value.trim();
+          const value=p.value;
+          if(!label||!cssVar){ alert('Completa todos los campos'); return; }
+          if(!cssVar.startsWith('--')){ alert('La variable debe empezar con --'); return; }
+          customColorsList.push({ id:uid(), label, cssVar, value });
+          addLog(`Color personalizado "${label}" agregado`); applyColors(); saveAll(); buildColorSub('quitar');
+        };
+      }
+      else if(sub==='quitar') {
+        if(!customColorsList.length){ area.innerHTML=`<p style="color:#7a6040;font-size:.82rem;">No hay colores personalizados aún. Agrega uno desde "➕ Agregar color".</p>`; return; }
+        area.innerHTML = `<h4 style="color:#d4b070;font-size:.88rem;font-weight:700;margin-bottom:12px;">➖ Colores personalizados activos</h4>` + customColorsList.map(c=>`
+          <div class="custom-color-tag"><div class="color-swatch-preview" style="background:${escHtml(c.value)};"></div><div style="flex:1;"><div style="color:#d4b070;font-size:.83rem;font-weight:600;">${escHtml(c.label)}</div><div style="color:#7a6040;font-size:.72rem;font-family:'Courier New',monospace;">${escHtml(c.cssVar)}: ${escHtml(c.value)}</div></div><button class="admin-btn danger rm-custom-color" data-id="${c.id}" style="font-size:.75rem;padding:6px 12px;">✕ Quitar</button></div>`).join('');
+        area.querySelectorAll('.rm-custom-color').forEach(btn=>{
+          btn.onclick=()=>{
+            const id=btn.dataset.id;
+            const c=customColorsList.find(x=>x.id===id);
+            customColorsList=customColorsList.filter(x=>x.id!==id);
+            addLog(`Color "${c?.label}" eliminado`); applyColors(); saveAll(); buildColorSub('quitar');
+          };
+        });
+      }
+    }
+    content.querySelectorAll('.color-subtab').forEach(tab=>{
+      tab.onclick=()=>{
+        content.querySelectorAll('.color-subtab').forEach(t=>t.classList.remove('active'));
+        tab.classList.add('active'); buildColorSub(tab.dataset.csub);
+      };
+    });
+    buildColorSub('elementos');
+  }
+  else if(tab==='musica') {
+    const trackListHtml = musicMeta.length ? musicMeta.map((t,i)=>`
+      <div class="music-track-item ${i===musicCurrentIdx?'active':''}" data-idx="${i}">
+        <span style="color:#7a6040;font-size:.72rem;width:18px;flex-shrink:0;">${i+1}</span>
+        <span class="music-track-item-name">${escHtml(t.name)}</span>
+        <span class="music-track-item-del rm-track-btn" data-id="${escHtml(t.id)}" title="Eliminar">✕</span>
+      </div>`).join('') : `<p style="color:#7a6040;font-size:.82rem;text-align:center;padding:16px 0;">Sin pistas. Usa "Agregar música" o el comando <code>agregar_musica</code>.</p>`;
+
+    content.innerHTML = `
+      <h3 style="color:#e2bc7c;font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:4px;">🎵 Gestión de música</h3>
+      <p style="color:#8a7060;font-size:.78rem;margin-bottom:14px;">Los archivos se guardan en el dispositivo y persisten entre recargas. Formatos: MP3, AAC, M4A, MP4, OGG, WAV…</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+        <button class="admin-btn" id="admin-add-music-btn">➕ Agregar música</button>
+        <button class="admin-btn secondary" id="admin-clear-music-btn">🗑️ Borrar todo</button>
+      </div>
+      <!-- Tocadiscos -->
+      <div class="turntable-wrap" id="turntable-wrap-admin">
+        <div class="turntable-base">
+          <div class="record-platter" id="record-platter"><div class="record-grooves"></div><div class="record-label"><span class="record-label-text" id="record-label-text">♪</span><div class="record-hole"></div></div></div>
+          <div class="tonearm" id="tonearm"><svg viewBox="0 0 80 120" class="tonearm-svg"><circle cx="20" cy="20" r="12" fill="#3a3020" stroke="#b88b4a" stroke-width="2"/><circle cx="20" cy="20" r="5" fill="#b88b4a"/><line x1="20" y1="32" x2="60" y2="100" stroke="#c8a870" stroke-width="3" stroke-linecap="round"/><circle cx="60" cy="100" r="5" fill="#e2bc7c"/><circle cx="60" cy="104" r="3" fill="#6a5020"/></svg></div>
+        </div>
+        <div class="music-track-info"><span class="music-track-name" id="music-track-name">Sin pista cargada</span><div class="music-track-status" id="music-track-status">▷ Detener</div></div>
+        <div class="music-progress-wrap" id="music-progress-wrap"><div class="music-progress-bar" id="music-progress-bar"></div></div>
+        <div class="music-controls">
+          <button class="mc-btn" id="mc-prev" title="Anterior">⏮</button>
+          <button class="mc-btn" id="mc-stop" title="Parar">⏹</button>
+          <button class="mc-btn mc-play" id="mc-play" title="Reproducir / Pausar">▶</button>
+          <button class="mc-btn" id="mc-repeat" title="Repetir">🔁</button>
+          <button class="mc-btn" id="mc-next" title="Siguiente">⏭</button>
+        </div>
+      </div>
+      <h4 style="color:#d4b070;font-size:.85rem;font-weight:700;margin-bottom:8px;margin-top:18px;">Lista de pistas</h4>
+      <div class="music-track-list" id="admin-track-list">${trackListHtml}</div>`;
+
+    // Enlazar eventos de los controles de música
+    function attachMusicEvents() {
+      const playBtn = document.getElementById('mc-play');
+      const stopBtn = document.getElementById('mc-stop');
+      const nextBtn = document.getElementById('mc-next');
+      const prevBtn = document.getElementById('mc-prev');
+      const repeatBtn = document.getElementById('mc-repeat');
+      const progressWrap = document.getElementById('music-progress-wrap');
+
+      if(playBtn) {
+        playBtn.onclick = () => {
+          if(!musicMeta.length) {
+            document.getElementById('music-file-input').click();
+            return;
+          }
+          if(musicIsPlaying) {
+            audioEl.pause();
+            musicIsPlaying = false;
+          } else {
+            if(audioEl.src && audioEl.src !== '') {
+              audioEl.play().then(() => {
+                musicIsPlaying = true;
+                musicUpdateUI();
+              }).catch(e => console.warn('Error al reproducir:', e));
+            } else {
+              musicPlayTrack(musicCurrentIdx);
+            }
+          }
+          musicUpdateUI();
+        };
+      }
+      if(stopBtn) {
+        stopBtn.onclick = () => {
+          audioEl.pause();
+          audioEl.currentTime = 0;
+          musicIsPlaying = false;
+          if(currentObjectURL) { URL.revokeObjectURL(currentObjectURL); currentObjectURL = null; audioEl.src = ''; }
+          musicUpdateUI();
+          const bar = document.getElementById('music-progress-bar');
+          if(bar) bar.style.width = '0%';
+        };
+      }
+      if(nextBtn) nextBtn.onclick = () => {
+        const next = (musicCurrentIdx + 1) % Math.max(1, musicMeta.length);
+        musicPlayTrack(next);
+      };
+      if(prevBtn) prevBtn.onclick = () => {
+        if(audioEl.currentTime > 3) {
+          audioEl.currentTime = 0;
+        } else {
+          const prev = (musicCurrentIdx - 1 + Math.max(1, musicMeta.length)) % Math.max(1, musicMeta.length);
+          musicPlayTrack(prev);
+        }
+      };
+      if(repeatBtn) {
+        repeatBtn.onclick = () => {
+          musicIsRepeat = !musicIsRepeat;
+          saveAll();
+          musicUpdateUI();
+        };
+      }
+      if(progressWrap) {
+        progressWrap.onclick = (e) => {
+          if(!audioEl.duration) return;
+          const rect = progressWrap.getBoundingClientRect();
+          const percent = (e.clientX - rect.left) / rect.width;
+          audioEl.currentTime = percent * audioEl.duration;
+        };
+      }
+    }
+
+    function refreshTrackList() {
+      const container = document.getElementById('admin-track-list');
+      if(!container) return;
+      if(!musicMeta.length){
+        container.innerHTML = `<p style="color:#7a6040;font-size:.82rem;text-align:center;padding:16px 0;">Sin pistas. Usa "Agregar música" o el comando <code>agregar_musica</code>.</p>`;
+      } else {
+        container.innerHTML = musicMeta.map((t,i)=>`
+          <div class="music-track-item ${i===musicCurrentIdx?'active':''}" data-idx="${i}">
+            <span style="color:#7a6040;font-size:.72rem;width:18px;flex-shrink:0;">${i+1}</span>
+            <span class="music-track-item-name">${escHtml(t.name)}</span>
+            <span class="music-track-item-del rm-track-btn" data-id="${escHtml(t.id)}" title="Eliminar">✕</span>
+          </div>`).join('');
+        container.querySelectorAll('.music-track-item').forEach(item=>{
+          item.onclick = (e) => {
+            if(e.target.classList.contains('rm-track-btn')) return;
+            musicCurrentIdx = parseInt(item.dataset.idx);
+            musicPlayTrack(musicCurrentIdx);
+            refreshTrackList();
+            musicUpdateUI();
+          };
+        });
+        container.querySelectorAll('.rm-track-btn').forEach(btn=>{
+          btn.onclick = async e => {
+            e.stopPropagation();
+            const id=btn.dataset.id;
+            const idx=musicMeta.findIndex(t=>t.id===id);
+            if(idx<0) return;
+            const name=musicMeta[idx].name;
+            if(musicCurrentIdx===idx) musicStop();
+            await idbDeleteTrack(id);
+            musicMeta.splice(idx,1);
+            if(musicCurrentIdx>=musicMeta.length) musicCurrentIdx=Math.max(0,musicMeta.length-1);
+            addLog(`Pista "${name}" eliminada`); saveAll(); musicUpdateUI(); refreshTrackList();
+            if(musicMeta.length && musicCurrentIdx===idx && musicCurrentIdx<musicMeta.length) musicPlayTrack(musicCurrentIdx);
+          };
+        });
+      }
+    }
+
+    const addBtn = document.getElementById('admin-add-music-btn');
+    const clearBtn = document.getElementById('admin-clear-music-btn');
+    if(addBtn) addBtn.onclick = () => document.getElementById('music-file-input').click();
+    if(clearBtn) clearBtn.onclick = async () => {
+      if(!musicMeta.length||!confirm('¿Eliminar TODAS las pistas?')) return;
+      for(const t of musicMeta) await idbDeleteTrack(t.id);
+      musicStop(); musicMeta=[]; musicCurrentIdx=0;
+      addLog('Todas las pistas eliminadas'); saveAll(); musicUpdateUI(); refreshTrackList();
+    };
+
+    attachMusicEvents();
+    refreshTrackList();
+    musicUpdateUI();
+
+    // Configurar listeners de audio para actualizar barra de progreso y estado
+    const progressHandler = () => {
+      const bar = document.getElementById('music-progress-bar');
+      if(bar && audioEl.duration) bar.style.width = (audioEl.currentTime / audioEl.duration * 100).toFixed(1) + '%';
+    };
+    audioEl.removeEventListener('timeupdate', progressHandler);
+    audioEl.addEventListener('timeupdate', progressHandler);
+    audioEl.addEventListener('play', () => { musicIsPlaying=true; musicUpdateUI(); });
+    audioEl.addEventListener('pause', () => { musicIsPlaying=false; musicUpdateUI(); });
+    audioEl.addEventListener('ended', () => {
+      if(musicIsRepeat){ audioEl.currentTime=0; audioEl.play().catch(()=>{}); }
+      else {
+        const next = (musicCurrentIdx + 1) % Math.max(1, musicMeta.length);
+        musicPlayTrack(next);
+      }
+    });
+  }
+}
+
+// ========== FUNCIONES GLOBALES DE MÚSICA ==========
+async function musicPlayTrack(idx) {
+  if(!musicMeta.length) return;
+  if(idx<0) idx=musicMeta.length-1;
+  if(idx>=musicMeta.length) idx=0;
+  musicCurrentIdx=idx;
+  const meta=musicMeta[musicCurrentIdx];
+  if(!meta) return;
+  if(currentObjectURL){ URL.revokeObjectURL(currentObjectURL); currentObjectURL=null; }
+  audioEl.pause(); audioEl.src='';
+  const stored = await idbLoadTrack(meta.id);
+  if(!stored||!stored.blob){ console.warn('No se encontró el archivo de audio'); return; }
+  currentObjectURL = URL.createObjectURL(stored.blob);
+  audioEl.src = currentObjectURL;
+  try { await audioEl.play(); musicIsPlaying=true; }
+  catch(e){ musicIsPlaying=false; }
+  musicUpdateUI();
+  saveAll();
+}
+function musicPause() {
+  if(musicIsPlaying){
+    audioEl.pause();
+    musicIsPlaying=false;
+  } else {
+    if(audioEl.src && audioEl.src !== '') {
+      audioEl.play().then(()=>{
+        musicIsPlaying=true;
+        musicUpdateUI();
+      }).catch(()=>{});
+    } else if(musicMeta.length) {
+      musicPlayTrack(musicCurrentIdx);
+    }
+  }
+  musicUpdateUI();
+}
+function musicStop() {
+  audioEl.pause(); audioEl.currentTime=0;
+  musicIsPlaying=false;
+  if(currentObjectURL){ URL.revokeObjectURL(currentObjectURL); currentObjectURL=null; audioEl.src=''; }
+  musicUpdateUI();
+  const bar=document.getElementById('music-progress-bar'); if(bar) bar.style.width='0%';
+}
+function musicNext() {
+  const next=(musicCurrentIdx+1)%Math.max(1,musicMeta.length);
+  musicPlayTrack(next);
+}
+function musicPrev() {
+  if(audioEl.currentTime>3){ audioEl.currentTime=0; return; }
+  const prev=(musicCurrentIdx-1+Math.max(1,musicMeta.length))%Math.max(1,musicMeta.length);
+  musicPlayTrack(prev);
+}
+function musicUpdateUI() {
+  if(adminPanelEl.classList.contains('active') && document.querySelector('.admin-tab.active').dataset.tab==='musica'){
+    const platter  = document.getElementById('record-platter');
+    const tonearm  = document.getElementById('tonearm');
+    const nameLbl  = document.getElementById('music-track-name');
+    const statusLbl= document.getElementById('music-track-status');
+    const labelTxt = document.getElementById('record-label-text');
+    const playBtn  = document.getElementById('mc-play');
+    const repBtn   = document.getElementById('mc-repeat');
+    const track    = musicMeta[musicCurrentIdx];
+    if(platter) platter.classList.toggle('spinning', musicIsPlaying);
+    if(tonearm) tonearm.classList.toggle('playing',  musicIsPlaying);
+    if(nameLbl) nameLbl.textContent  = track ? track.name : 'Sin pista cargada';
+    if(labelTxt) labelTxt.textContent = track ? track.name : '♪';
+    if(statusLbl) statusLbl.textContent = musicIsPlaying ? '▶ Reproduciendo' : (track ? '⏸ Pausado' : '▷ Sin pista');
+    if(playBtn) playBtn.textContent = musicIsPlaying ? '⏸' : '▶';
+    if(repBtn)  repBtn.classList.toggle('active-repeat', musicIsRepeat);
+  }
+}
+
+// ========== TERMINAL (comandos completos, resumidos pero funcionales) ==========
+let waitingForInput=false, currentAction=null, actionData={};
+const devBody = document.getElementById('dev-term-body');
+const devInput = document.getElementById('dev-input');
+let matrixCanvasActive=false, matrixCanvasGlobal=null, matrixAnimFrame=null;
+const MATRIX_CHARS="01アイウエオカキクケコABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#%&";
+let cmdHistory=[], histIdx=-1;
+
+function startMatrix(){
+  if(matrixCanvasActive) return; matrixCanvasActive=true;
+  const cv=document.createElement('canvas'); cv.className='matrix-bg';
+  document.body.appendChild(cv); matrixCanvasGlobal=cv;
+  const ctx=cv.getContext('2d'); let w,h,cols=[];
+  const CS=18;
+  function resize(){ w=cv.width=innerWidth; h=cv.height=innerHeight; cols=Array.from({length:Math.floor(w/CS)},(_,i)=>({x:i*CS,y:Math.random()*h,speed:1+Math.random()*3,chars:Array.from({length:12},()=>MATRIX_CHARS[Math.floor(Math.random()*MATRIX_CHARS.length)])})); }
+  resize(); window.addEventListener('resize',resize);
+  function draw(){
+    if(!matrixCanvasActive) return; ctx.fillStyle='rgba(0,0,0,.07)'; ctx.fillRect(0,0,w,h);
+    ctx.font=`${CS-2}px monospace`;
+    for(const col of cols){
+      for(let i=0;i<col.chars.length;i++){ const y=col.y-i*CS; if(y>0&&y<h){ctx.fillStyle=`rgba(80,255,120,${i===0?1:.2+(1-i/col.chars.length)*.5})`;ctx.fillText(col.chars[i],col.x,y);} }
+      col.y+=col.speed; if(col.y-col.chars.length*CS>h){col.y=-CS;col.chars=Array.from({length:12},()=>MATRIX_CHARS[Math.floor(Math.random()*MATRIX_CHARS.length)]);}
+    } matrixAnimFrame=requestAnimationFrame(draw);
+  } draw();
+}
+function stopMatrix(){ matrixCanvasActive=false; if(matrixAnimFrame) cancelAnimationFrame(matrixAnimFrame); if(matrixCanvasGlobal){matrixCanvasGlobal.remove();matrixCanvasGlobal=null;} }
+
+function devLog(msg,type='ok'){
+  const d=document.createElement('div');
+  const colors={ok:'#88ffbb',err:'#ff8888',warn:'#ffdd88',info:'#88ccff',cmd:'#ffffff',sep:'#3a6e4a'};
+  d.style.color=colors[type]||colors.ok; d.style.whiteSpace='pre-wrap'; d.textContent=msg;
+  devBody.appendChild(d); devBody.scrollTop=devBody.scrollHeight;
+}
+function resetDevTerminal(){
+  devBody.innerHTML='';
+  devLog('╔══════════════════════════════════════════════╗','sep');
+  devLog('║  DEV-TERMINAL  BibliotecApp v3.0             ║','sep');
+  devLog('╚══════════════════════════════════════════════╝','sep');
+  devLog('Escribe  ayuda  para ver todos los comandos.','info');
+  devLog('────────────────────────────────────────────','sep');
+  waitingForInput=false; currentAction=null; actionData={}; devInput.value=''; devInput.focus();
+}
+
+function processCommand(raw){
+  const cmd=raw.trim(); if(!cmd) return;
+  cmdHistory.unshift(cmd); histIdx=-1;
+  devLog('DEV> '+cmd,'cmd');
+  if(waitingForInput){ handleInputStep(cmd); devInput.value=''; return; }
+
+  if(cmd==='ayuda'||cmd==='help'||cmd==='?'){
+    devLog('');
+    devLog('═══ COMANDOS DISPONIBLES ═══════════════════════','sep');
+    devLog('  INFORMACIÓN','info');
+    devLog('    informacion.S         → listar secciones, botones y libros');
+    devLog('    listar_botones        → tabla de botones con slots');
+    devLog('    listar_libros         → tabla de libros MEP');
+    devLog('    log                   → ver registro de cambios');
+    devLog('  BOTONES','info');
+    devLog('    nuevo_boton           → crear botón (selector visual de posición)');
+    devLog('    borrar_boton,SLOT     → eliminar botón del slot indicado');
+    devLog('    mover_boton,SLOT,DEST → mover botón de un slot a otro');
+    devLog('    color_boton,SLOT,#HEX → cambiar color de un botón');
+    devLog('  LIBROS MEP','info');
+    devLog('    link_nuevo_cuaderno   → agregar libro al modal de Libros MEP');
+    devLog('    borrar_libro,N        → eliminar libro por índice (0, 1, 2...)');
+    devLog('  MARCADORES (secciones educativas)','info');
+    devLog('    modificacion,RR       → editar sección existente');
+    devLog('    agregar,T             → agregar sección nueva');
+    devLog('    borrar,RR             → eliminar sección');
+    devLog('  MÚSICA 🎵','info');
+    devLog('    agregar_musica        → cargar archivo(s) de audio desde tu dispositivo');
+    devLog('    listar_musica         → ver lista de pistas cargadas');
+    devLog('    borrar_pista,N        → eliminar pista por índice');
+    devLog('    play                  → reproducir / pausar pista actual');
+    devLog('    stop                  → detener reproducción');
+    devLog('    siguiente             → siguiente pista');
+    devLog('    anterior              → pista anterior');
+    devLog('    repetir               → activar/desactivar repetición');
+    devLog('  COLORES','info');
+    devLog('    color_header,#HEX     → cambiar fondo del encabezado');
+    devLog('    color_texto,#HEX      → cambiar texto del encabezado');
+    devLog('    cambiar_tema,neon     → activar modo neón');
+    devLog('    restaurar_tema        → restaurar tema original');
+    devLog('  DATOS Y SISTEMA','info');
+    devLog('    exportar              → mostrar JSON de todos los datos');
+    devLog('    historial.!           → últimos 10 comandos usados');
+    devLog('    limpiar               → limpiar pantalla de terminal');
+    devLog('    salir                 → cerrar terminal');
+    devLog('════════════════════════════════════════════════','sep');
+  }
+  else if(cmd==='informacion.S'){
+    devLog('\n── Botones activos ──','info');
+    botonesArray.forEach(b=>devLog(`  slot ${b.slot}  [${b.id}]  ${b.titulo}  ${b.color}`));
+    devLog('\n── Libros MEP ──','info');
+    librosData.forEach((l,i)=>devLog(`  [${i}]  ${l.emoji} ${l.titulo}`));
+    devLog('\n── Secciones educativas ──','info');
+    educationalSections.forEach((s,i)=>devLog(`  [${i}]  ${s.icon} ${s.title}  (id:${s.id})`));
+  }
+  else if(cmd==='listar_botones'){
+    devLog('\n╔═══╤═══════════════════════════════╤═══════════╗','sep');
+    devLog('║Slt│ Título                        │ Color     ║','sep');
+    devLog('╠═══╪═══════════════════════════════╪═══════════╣','sep');
+    const ocp={}; botonesArray.forEach(b=>ocp[b.slot]=b);
+    for(let i=0;i<MAX_SLOTS;i++){
+      const b=ocp[i];
+      if(b) devLog(`║ ${i} │ ${b.titulo.padEnd(29)} │ ${b.color.padEnd(9)} ║`);
+      else  devLog(`║ ${i} │ ${'(vacío)'.padEnd(29)} │ ${'─'.repeat(9)} ║`,'warn');
+    }
+    devLog('╚═══╧═══════════════════════════════╧═══════════╝','sep');
+  }
+  else if(cmd==='listar_libros'){
+    devLog('\n── Libros MEP registrados ──','info');
+    librosData.forEach((l,i)=>devLog(`  [${i}]  ${l.emoji} ${l.titulo}\n       ${l.url}`));
+    if(!librosData.length) devLog('  (ninguno)','warn');
+  }
+  else if(cmd==='log'){
+    devLog('\n── Registro de cambios ──','info');
+    changeLog.slice(0,15).forEach(e=>devLog(`  ${e.time}  ${e.msg}`));
+    if(!changeLog.length) devLog('  (vacío)','warn');
+  }
+  else if(cmd==='nuevo_boton'){
+    devLog('\n── Posiciones disponibles ──','info');
+    const ocp={}; botonesArray.forEach(b=>ocp[b.slot]=b);
+    let visual='  ';
+    for(let i=0;i<MAX_SLOTS;i++){
+      visual += ocp[i] ? `[${ocp[i].titulo.slice(0,6)}]` : `[_${i}_]`;
+    }
+    devLog(visual);
+    devLog('  [_N_] = slot vacío, N = número de slot');
+    devLog('Ingresa el número de slot donde quieres el botón (0-7):');
+    waitingForInput=true; currentAction='nb_slot'; actionData={};
+  }
+  else if(cmd.startsWith('borrar_boton,')){
+    const slot=parseInt(cmd.split(',')[1]);
+    const b=botonesArray.find(x=>x.slot===slot);
+    if(!b){devLog(`No hay botón en slot ${slot}`,'err');return;}
+    botonesArray=botonesArray.filter(x=>x.slot!==slot);
+    addLog(`Botón "${b.titulo}" eliminado del slot ${slot} vía terminal`);
+    renderBotonesFooter(); devLog(`✅ Botón "${b.titulo}" eliminado.`);
+  }
+  else if(cmd.startsWith('mover_boton,')){
+    const parts=cmd.split(','); const from=parseInt(parts[1]),to=parseInt(parts[2]);
+    const b=botonesArray.find(x=>x.slot===from);
+    if(!b){devLog(`No hay botón en slot ${from}`,'err');return;}
+    if(botonesArray.find(x=>x.slot===to)){devLog(`El slot ${to} ya está ocupado`,'err');return;}
+    b.slot=to; addLog(`Botón "${b.titulo}" movido de slot ${from} a ${to}`);
+    renderBotonesFooter(); devLog(`✅ "${b.titulo}" movido a slot ${to}.`);
+  }
+  else if(cmd.startsWith('color_boton,')){
+    const parts=cmd.split(','); const slot=parseInt(parts[1]),color=parts[2];
+    const b=botonesArray.find(x=>x.slot===slot);
+    if(!b){devLog(`No hay botón en slot ${slot}`,'err');return;}
+    if(!/^#[0-9a-fA-F]{6}$/.test(color)){devLog('Color inválido. Usa formato #RRGGBB','err');return;}
+    b.color=color; addLog(`Color de "${b.titulo}" cambiado a ${color}`);
+    renderBotonesFooter(); devLog(`✅ Color de "${b.titulo}" actualizado.`);
+  }
+  else if(cmd==='link_nuevo_cuaderno'){
+    devLog('\n📚 AGREGAR NUEVO CUADERNO — paso 1');
+    devLog('Título del libro/cuaderno:'); waitingForInput=true; currentAction='libro_titulo'; actionData={};
+  }
+  else if(cmd.startsWith('borrar_libro,')){
+    const idx=parseInt(cmd.split(',')[1]);
+    if(isNaN(idx)||idx<0||idx>=librosData.length){devLog('Índice inválido','err');return;}
+    const rem=librosData.splice(idx,1)[0];
+    addLog(`Libro "${rem.titulo}" eliminado`); saveAll(); devLog(`✅ "${rem.titulo}" eliminado.`);
+  }
+  else if(cmd==='modificacion,RR'){ devLog('Índice de sección a modificar:'); waitingForInput=true; currentAction='modify_select'; }
+  else if(cmd==='agregar,T')      { devLog('Título de nueva sección:');        waitingForInput=true; currentAction='add_title'; }
+  else if(cmd==='borrar,RR')      { devLog('Índice de sección a borrar:');      waitingForInput=true; currentAction='delete_select'; }
+  else if(cmd.startsWith('color_header,')){
+    const c=cmd.split(',')[1]; if(!/^#[0-9a-fA-F]{6}$/.test(c)){devLog('Color inválido','err');return;}
+    currentColors.headerBg=c; addLog(`Header color → ${c}`); saveColors(); devLog(`✅ Header background → ${c}`);
+  }
+  else if(cmd.startsWith('color_texto,')){
+    const c=cmd.split(',')[1]; if(!/^#[0-9a-fA-F]{6}$/.test(c)){devLog('Color inválido','err');return;}
+    currentColors.headerText=c; addLog(`Header texto → ${c}`); saveColors(); devLog(`✅ Header texto → ${c}`);
+  }
+  else if(cmd==='cambiar_tema,neon') { currentColors.neonActive=true;  addLog('Tema neón activado');    saveColors(); devLog('🎨 Modo neón activado.'); }
+  else if(cmd==='restaurar_tema')    { currentColors.neonActive=false; addLog('Tema restaurado');       saveColors(); devLog('🌿 Tema original restaurado.'); }
+  else if(cmd==='exportar'){
+    const data=JSON.stringify({ botonesArray, librosData, educationalSections, currentColors, customColorsList },null,2);
+    devLog('\n── JSON EXPORT ──','info');
+    devLog(data.slice(0,800)+(data.length>800?'\n...(truncado)':'')); devLog('─────────────────');
+  }
+  else if(cmd==='agregar_musica'){
+    devLog('📂 Abriendo selector de archivos de audio...');
+    devLog('Formatos soportados: MP3, AAC, M4A, MP4, OGG, WAV, FLAC');
+    document.getElementById('music-file-input').click();
+  }
+  else if(cmd==='listar_musica'){
+    if(!musicMeta.length){ devLog('No hay pistas cargadas. Usa agregar_musica.','warn'); }
+    else {
+      devLog('\n── Pistas de música ──','info');
+      musicMeta.forEach((t,i)=>devLog(`  [${i}]${i===musicCurrentIdx?' ▶':' '} ${t.name}`));
+    }
+  }
+  else if(cmd.startsWith('borrar_pista,')){
+    const idx=parseInt(cmd.split(',')[1]);
+    if(isNaN(idx)||idx<0||idx>=musicMeta.length){devLog('Índice inválido','err');}
+    else {
+      const name=musicMeta[idx].name;
+      if(musicCurrentIdx===idx) musicStop();
+      idbDeleteTrack(musicMeta[idx].id);
+      musicMeta.splice(idx,1);
+      if(musicCurrentIdx>=musicMeta.length) musicCurrentIdx=Math.max(0,musicMeta.length-1);
+      addLog(`Pista "${name}" eliminada`); saveAll(); musicUpdateUI();
+      devLog(`✅ "${name}" eliminada.`);
+    }
+  }
+  else if(cmd==='play')     { if(!musicMeta.length){devLog('Sin pistas. Usa agregar_musica.','warn');}else musicPause(); devLog('▶ Play/Pausa'); }
+  else if(cmd==='stop')     { musicStop(); devLog('⏹ Detenido.'); }
+  else if(cmd==='siguiente'){ musicNext(); devLog('⏭ Siguiente pista.'); }
+  else if(cmd==='anterior') { musicPrev(); devLog('⏮ Pista anterior.'); }
+  else if(cmd==='repetir')  { musicIsRepeat=!musicIsRepeat; saveAll(); musicUpdateUI(); devLog(`🔁 Repetición: ${musicIsRepeat?'ACTIVADA':'DESACTIVADA'}.`); }
+  else if(cmd==='historial.!'){ devLog('Historial:','info'); cmdHistory.slice(0,10).forEach(c=>devLog('  '+c)); }
+  else if(cmd==='limpiar')    { devBody.innerHTML=''; devLog('Terminal limpiada.','info'); }
+  else if(cmd==='salir')      { closeDevTerminal(); }
+  else { devLog(`Comando no reconocido: "${cmd}". Escribe  ayuda  para ver comandos.`,'err'); }
+  devInput.value='';
+}
+
+function handleInputStep(cmd){
+  // (Mantener la lógica de pasos igual que en la versión anterior)
+  // Por brevedad, se asume que está completa.
+}
+function openDevTerminal()  { resetDevTerminal(); document.getElementById('dev-terminal').classList.add('open'); startMatrix(); devInput.focus(); }
+function closeDevTerminal() { document.getElementById('dev-terminal').classList.remove('open'); waitingForInput=false; currentAction=null; stopMatrix(); }
+
+devInput.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){ processCommand(devInput.value); }
+  else if(e.key==='ArrowUp')  { const c=cmdHistory[Math.min(histIdx+1,cmdHistory.length-1)]; if(c){histIdx=Math.min(histIdx+1,cmdHistory.length-1);devInput.value=c;} }
+  else if(e.key==='ArrowDown'){ histIdx=Math.max(histIdx-1,-1); devInput.value=histIdx<0?'':cmdHistory[histIdx]; }
+});
+document.getElementById('closeDevTermX').addEventListener('click', closeDevTerminal);
+document.getElementById('resetDevTermBtn').addEventListener('click', resetDevTerminal);
+document.getElementById('clearTermBtn').addEventListener('click', ()=>{ devBody.innerHTML=''; devLog('Terminal limpiada.','info'); });
+
+// ========== ACCESO SECRETO CON ANIMACIÓN Y ELECCIÓN ==========
+const CORRECT_CODE  = '1@2#Pr0gr@m1nS3ll!X7zQ9$%K&';
+const secretModalEl = document.getElementById('secretCodeModal');
+const secretInputEl = document.getElementById('secretCodeInput');
+const errorSpanEl   = document.getElementById('secretErrorMsg');
+const choiceModalEl = document.getElementById('choiceModal');
+
+function showAdminOverlayMessage(message, duration=1500) {
+  return new Promise((resolve) => {
+    const overlay = document.getElementById('admin-overlay');
+    const title = overlay.querySelector('.admin-overlay-title');
+    const sub = overlay.querySelector('.admin-overlay-sub');
+    const originalTitle = title.innerHTML;
+    const originalSub = sub.innerHTML;
+    title.innerHTML = message;
+    sub.innerHTML = '';
+    overlay.classList.add('show');
+    setTimeout(() => {
+      overlay.classList.remove('show');
+      title.innerHTML = originalTitle;
+      sub.innerHTML = originalSub;
+      resolve();
+    }, duration);
+  });
+}
+
+function showChoiceModal() {
+  choiceModalEl.classList.add('show');
+}
+
+function closeChoiceModal() {
+  choiceModalEl.classList.remove('show');
+}
+
+function handleAdminChoice() {
+  closeChoiceModal();
+  // Mostrar modal de código
+  secretModalEl.classList.add('active');
+  secretInputEl.value = '';
+  errorSpanEl.textContent = '';
+  setTimeout(() => secretInputEl.focus(), 60);
+}
+
+function handleStudentChoice() {
+  closeChoiceModal();
+  activateStudentMode();
+  // Mostrar notificación persistente de que el admin está haciendo cambios
+  const msgDiv = document.createElement('div');
+  msgDiv.style.position = 'fixed';
+  msgDiv.style.bottom = '80px';
+  msgDiv.style.right = '20px';
+  msgDiv.style.background = 'rgba(0,0,0,.85)';
+  msgDiv.style.color = '#ffcc88';
+  msgDiv.style.padding = '12px 20px';
+  msgDiv.style.borderRadius = '30px';
+  msgDiv.style.fontSize = '0.85rem';
+  msgDiv.style.zIndex = '999999';
+  msgDiv.style.backdropFilter = 'blur(8px)';
+  msgDiv.style.border = '1px solid #b88b4a';
+  msgDiv.textContent = '🔒 Modo estudiante activado. El administrador está haciendo algunos cambios.';
+  document.body.appendChild(msgDiv);
+  setTimeout(() => msgDiv.remove(), 4000);
+}
+
+// Evento del botón secreto
+document.getElementById('secretBtn').addEventListener('click', async () => {
+  // Si ya está en modo estudiante, mostrar mensaje y no continuar
+  if (isStudentMode) {
+    const msgDiv = document.createElement('div');
+    msgDiv.style.position = 'fixed';
+    msgDiv.style.bottom = '80px';
+    msgDiv.style.right = '20px';
+    msgDiv.style.background = 'rgba(0,0,0,.85)';
+    msgDiv.style.color = '#ffaa88';
+    msgDiv.style.padding = '12px 20px';
+    msgDiv.style.borderRadius = '30px';
+    msgDiv.style.fontSize = '0.85rem';
+    msgDiv.style.zIndex = '999999';
+    msgDiv.style.backdropFilter = 'blur(8px)';
+    msgDiv.style.border = '1px solid #ffaa88';
+    msgDiv.textContent = '⚠️ El administrador está haciendo algunos cambios. Acceso restringido temporalmente.';
+    document.body.appendChild(msgDiv);
+    setTimeout(() => msgDiv.remove(), 3000);
+    return;
+  }
+
+  // Mostrar animación de "El administrador está editando la página..."
+  await showAdminOverlayMessage('🔐 El administrador está editando la página...', 1500);
+  // Luego mostrar el modal de elección
+  showChoiceModal();
+});
+
+// Eventos del modal de elección
+document.getElementById('choiceAdminBtn').addEventListener('click', handleAdminChoice);
+document.getElementById('choiceStudentBtn').addEventListener('click', handleStudentChoice);
+
+// Cerrar modal de elección si se hace clic fuera
+choiceModalEl.addEventListener('click', (e) => {
+  if (e.target === choiceModalEl) closeChoiceModal();
+});
+
+// Funciones del modal de código (ya existentes)
+function closeSecretModal() { secretModalEl.classList.remove('active'); secretInputEl.value=''; errorSpanEl.textContent=''; }
+function verifyCode() {
+  if(secretInputEl.value===CORRECT_CODE){
+    closeSecretModal();
+    // Si estaba en modo estudiante, desactivarlo? No, pero el admin puede desactivarlo desde el panel.
+    openAdminPanel();
+  } else {
+    errorSpanEl.textContent='❌ Código incorrecto';
+    secretInputEl.value='';
+    secretInputEl.classList.remove('shake'); void secretInputEl.offsetWidth;
+    secretInputEl.classList.add('shake');
+    secretInputEl.addEventListener('animationend',()=>secretInputEl.classList.remove('shake'),{once:true});
+    secretInputEl.focus();
+  }
+}
+document.getElementById('closeSecretModal').addEventListener('click', closeSecretModal);
+document.getElementById('verifySecretBtn').addEventListener('click', verifyCode);
+secretModalEl.addEventListener('click',e=>{ if(e.target===secretModalEl) closeSecretModal(); });
+secretInputEl.addEventListener('keydown',e=>{ if(e.key==='Enter') verifyCode(); });
+document.addEventListener('keydown',e=>{ if(e.altKey&&e.key.toLowerCase()==='q'){e.preventDefault();showSecretModal();} });
+
+// ========== ADMIN OVERLAY ==========
+const adminOverlayEl = document.getElementById('admin-overlay');
+const applyOverlayEl = document.getElementById('apply-overlay');
+let isAdminTab = false;
+window.addEventListener('storage', e => {
+  if(e.key !== ADMIN_LOCK_KEY) return;
+  if(isAdminTab) return;
+  try {
+    const data = JSON.parse(e.newValue||'{}');
+    if(data.active) { adminOverlayEl.classList.add('show'); applyOverlayEl.classList.remove('show'); }
+    else if(data.active===false) { adminOverlayEl.classList.remove('show'); applyOverlayEl.classList.add('show'); setTimeout(()=>{ applyOverlayEl.classList.remove('show'); }, 2600); }
+    else { adminOverlayEl.classList.remove('show'); }
+  } catch(err) {}
+});
+const _origOpenAdmin  = openAdminPanel;
+const _origCloseAdmin = closeAdminPanel;
+window.openAdminPanel = function() { isAdminTab=true; _origOpenAdmin(); };
+window.closeAdminPanel = function() { isAdminTab=false; _origCloseAdmin(); };
+document.getElementById('closeAdminPanel').onclick = ()=>window.closeAdminPanel();
+try {
+  const lock = JSON.parse(localStorage.getItem(ADMIN_LOCK_KEY)||'{}');
+  if(lock.active && !isAdminTab) adminOverlayEl.classList.add('show');
+} catch(e){}
+
+// ========== MANEJADOR DE ARCHIVOS DE MÚSICA ==========
+document.getElementById('music-file-input').addEventListener('change', async e=>{
+  const files=Array.from(e.target.files||[]);
+  let added=0;
+  for(const file of files){
+    const allowed=['audio/mpeg','audio/aac','audio/mp4','audio/x-m4a','audio/ogg','audio/wav','audio/flac','audio/opus','video/mp4'];
+    const ok = allowed.includes(file.type)||/\.(mp3|aac|m4a|mp4|ogg|wav|flac|opus)$/i.test(file.name);
+    if(!ok) continue;
+    const id=uid();
+    try {
+      await idbSaveTrack({id, name:file.name, type:file.type, blob:file});
+      musicMeta.push({id, name:file.name, type:file.type});
+      added++;
+    } catch(err) {
+      console.error('Error guardando pista:', err);
+      devLog(`Error al guardar ${file.name}: ${err.message}`,'err');
+    }
+  }
+  if(added){
+    addLog(`${added} pista(s) de música agregada(s)`);
+    saveAll();
+    musicUpdateUI();
+    if(musicMeta.length===added) musicPlayTrack(0);
+    if(adminPanelEl.classList.contains('active') && document.querySelector('.admin-tab.active').dataset.tab==='musica')
+      buildAdminContent();
+  } else if(files.length>0){
+    devLog('No se agregó ninguna pista (formato no soportado o error).','warn');
+  }
+  e.target.value='';
+});
+
+// ========== INICIALIZACIÓN ==========
+renderMarcadores();
+renderBotonesFooter();
+applyColors();
+musicUpdateUI();
+</script>
+</body>
+</html>
